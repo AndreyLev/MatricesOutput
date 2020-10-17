@@ -1,9 +1,7 @@
-﻿using IndependentWork1.Interfaces;
-using IndependentWork1.Realisation;
+﻿using IndependentWork1.Realization;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace IndependentWork1.Models
 {

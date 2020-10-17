@@ -1,9 +1,8 @@
 ﻿using IndependentWork1.Models;
-using IndependentWork1.Realisation;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace IndependentWork1.Realisation
+namespace IndependentWork1.Realization
 {
     class FormDrawer : IDrawer
     {

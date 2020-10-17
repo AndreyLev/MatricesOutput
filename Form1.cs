@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using IndependentWork1.Models;
-using IndependentWork1.Realisation;
+using IndependentWork1.Realization;
 
 namespace ClientPart
 {

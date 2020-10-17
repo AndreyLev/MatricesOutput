@@ -1,11 +1,7 @@
 ﻿using IndependentWork1.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IndependentWork1.Realisation
+
+namespace IndependentWork1.Realization
 {
     public interface IDrawer
     {

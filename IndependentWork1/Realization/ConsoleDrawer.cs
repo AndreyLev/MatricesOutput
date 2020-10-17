@@ -1,7 +1,7 @@
 ﻿using IndependentWork1.Models;
 using System;
 
-namespace IndependentWork1.Realisation
+namespace IndependentWork1.Realization
 {
     public class ConsoleDrawer : IDrawer
     {
