@@ -93,11 +93,13 @@ namespace IndependentWork1.Models
 
         public override void Draw()
         {
+            ClearDrawerWindowIfGrapics();
             drawer.DrawMatrix(this);
         }
 
         public override void DoDrawBorder()
         {
+            ClearDrawerWindowIfGrapics();
             drawer.DrawBorder(this);
         }
     }

@@ -1,8 +1,7 @@
 ﻿using IndependentWork1.Interfaces;
 using IndependentWork1.Realisation;
-using System;
 using System.Collections;
-using System.Text;
+using System.Drawing;
 
 namespace IndependentWork1.Models
 {
@@ -14,6 +13,11 @@ namespace IndependentWork1.Models
         public IVector[] VectorArr
         {
             get { return matrix; }
+        }
+
+        public IDrawer Drawer { 
+            get { return drawer; }
+            set { drawer = value; } 
         }
 
         protected SomeMatrix(IDrawer drawer)
@@ -33,7 +37,16 @@ namespace IndependentWork1.Models
         public abstract void Draw();
 
         public abstract void DoDrawBorder();
+     
         
+        public void ClearDrawerWindowIfGrapics()
+        {
+            if (drawer is FormDrawer)
+            {
+                FormDrawer formDrawer = (FormDrawer) drawer;
+                formDrawer.GraphicsObj.Clear(SystemColors.Control);
+            }
+        } 
 
         public abstract IEnumerator GetEnumerator();
         

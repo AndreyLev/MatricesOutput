@@ -82,6 +82,7 @@
     <Compile Include="IndependentWork1\Models\SparseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseVector.cs" />
     <Compile Include="IndependentWork1\Realisation\ConsoleDrawer.cs" />
+    <Compile Include="IndependentWork1\Realisation\FormDrawer.cs" />
     <Compile Include="IndependentWork1\Realisation\IDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

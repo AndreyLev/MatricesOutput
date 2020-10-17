@@ -1,25 +1,24 @@
 ﻿using IndependentWork1.Models;
-using IndependentWork1.Realisation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ClientPart.IndependentWork1.Realisation
+namespace IndependentWork1.Realisation
 {
     public class ConsoleDrawer : IDrawer
     {
         delegate void CellHandler(double d);
+        delegate void TopBottomCellBorderHandler(double d);
         CellHandler cellHandler;
+        TopBottomCellBorderHandler tbHandler;
 
         public ConsoleDrawer()
         {
             cellHandler = DrawCell;
+            tbHandler = null;
         }
-        
+
         void printLine(double colNumber)
         {
+            Console.Write(" ");
             for (int i = 0; i < colNumber; i++)
             {
                 if (i == colNumber - 1)
@@ -32,15 +31,15 @@ namespace ClientPart.IndependentWork1.Realisation
         }
         public void DrawBorder(SomeMatrix matrix)
         {
-            Console.Write(" ");
+
             printLine(matrix.ColumnNumber);
 
             Console.WriteLine();
-            cellHandler = DrawCellBorder;
+            tbHandler = printLine;
             DrawMatrix(matrix);
-            cellHandler = DrawCell;
+            tbHandler = null;
 
-            Console.Write(" ");
+
             printLine(matrix.ColumnNumber);
             Console.WriteLine();
         }
@@ -50,24 +49,46 @@ namespace ClientPart.IndependentWork1.Realisation
             Console.Write("{0,-4:00.00} ", el);
         }
 
+        private void DrawEmptyElement(double el)
+        {
+            Console.Write("{0,5} ", " ");
+        }
+
         public void DrawCellBorder(double el)
         {
             Console.Write("|");
-            DrawCell(el);
+            cellHandler(el);
             Console.Write("|");
         }
 
         public void DrawMatrix(SomeMatrix matrix)
         {
-                for (int i = 0; i < matrix.RowNumber; i++)
+            for (int i = 0; i < matrix.RowNumber; i++)
+            {
+                for (int j = 0; j < matrix.ColumnNumber; j++)
                 {
-                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    
+                    if (matrix[i,j] == 0)
                     {
-                        cellHandler(matrix[i, j]);
+                        if (matrix is SparseMatrix)
+                        {
+                            cellHandler = DrawEmptyElement;
+                        }
+                        
                     }
+                    DrawCellBorder(matrix[i, j]);
+                    cellHandler = DrawCell;
+                   
+
+                }
+                Console.WriteLine();
+                if (i != matrix.RowNumber - 1 && tbHandler != null)
+                {
+                    tbHandler(matrix.ColumnNumber);
                     Console.WriteLine();
                 }
-            
+
+            }
         }
     }
 }
