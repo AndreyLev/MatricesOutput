@@ -12,6 +12,8 @@ namespace ClientPart
         const int graphicsFormHeight = 600;
         Form graphicsForm;
         SomeMatrix matrix;
+        ConsoleDrawer consoleDrawer;
+        FormDrawer formDrawer;
 
         
         public Form1()
@@ -24,15 +26,17 @@ namespace ClientPart
             graphicsForm.MaximizeBox = false;
             graphicsForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             graphicsForm.Show();
+            consoleDrawer = new ConsoleDrawer();
+            formDrawer = new FormDrawer(graphicsForm);
 
         }
         
         private void changeDrawers()
         {
             if (matrix.Drawer is ConsoleDrawer)
-                matrix.Drawer = new FormDrawer(graphicsForm);
+                matrix.Drawer = formDrawer;
             else
-                matrix.Drawer = new ConsoleDrawer();
+                matrix.Drawer = consoleDrawer;
         }
 
         private bool IsMatrixBig()
@@ -49,7 +53,7 @@ namespace ClientPart
         {
             if (matrix.Drawer is FormDrawer)
             {
-                matrix.Drawer = new ConsoleDrawer();
+                matrix.Drawer = consoleDrawer;
             }
                 
         }
@@ -93,7 +97,7 @@ namespace ClientPart
             int dmRowCount = 7;
             int dmColumnCount = 6; 
             Console.Clear();
-            matrix = new DenseMatrix(dmRowCount, dmColumnCount, new FormDrawer(graphicsForm));
+            matrix = new DenseMatrix(dmRowCount, dmColumnCount, formDrawer);
            
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
@@ -107,7 +111,7 @@ namespace ClientPart
             Console.Clear();
             int smRowCount = 6;
             int smColumnCount = 7;
-            matrix = new SparseMatrix(smRowCount, smColumnCount, new ConsoleDrawer());
+            matrix = new SparseMatrix(smRowCount, smColumnCount, consoleDrawer);
             MatrixInitiator.FillMatrix(matrix, 15, 15);
              DrawMatrixDependingOnCheckbox();
 
