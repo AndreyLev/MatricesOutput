@@ -44,7 +44,7 @@ namespace IndependentWork1.Models
         }
         public double getValue(int index)
         {
-            return this[index];
+            return vector[index];
         }
 
         public SortedList<int, double> getVector()

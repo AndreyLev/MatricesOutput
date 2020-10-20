@@ -6,15 +6,7 @@ namespace IndependentWork1.Models
 {
     public class SparseMatrix : SomeMatrix
     {
-        new SparseVector[] matrix;
 
-        public SparseVector[] Matrix { 
-            
-            get
-            {
-                return matrix;
-            } 
-        }
 
         public override double this[int rowIndex, int columnIndex]
         {
@@ -22,8 +14,8 @@ namespace IndependentWork1.Models
             {
                 if (rowIndex >= RowNumber) return 0;
                 if (columnIndex >= ColumnNumber) return 0;
-
-                if (matrix[rowIndex].Vector.Keys.Contains(columnIndex))
+                SparseVector temp = (SparseVector)matrix[rowIndex];
+                if (temp.Vector.ContainsKey(columnIndex))
                 {
                     return matrix[rowIndex][columnIndex];
                 }
@@ -32,10 +24,11 @@ namespace IndependentWork1.Models
             }
             set
             {
-                    if (rowIndex < RowNumber && columnIndex < ColumnNumber)
-                          matrix[rowIndex][columnIndex] = value;
+                if (rowIndex < RowNumber && columnIndex < ColumnNumber)
+                    matrix[rowIndex][columnIndex] = value;
             }
         }
+
         public SparseMatrix(int rowCount, int columnCount, IDrawer drawer) : base(drawer)
         {
             matrix = new SparseVector[rowCount];
@@ -48,41 +41,20 @@ namespace IndependentWork1.Models
         }
         public override IEnumerator GetEnumerator()
         {
-            return new SparceMatrixEnumerator(matrix);
-        }
-
-        public void printMatrix()
-        {
-           
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                
-                for (int k = 0; k < ColumnNumber; k++)
-                {
-                    if (matrix[i].Vector.ContainsKey(k))
-                    {
-                        if (matrix[i][k] == 0) continue;
-                        Console.Write("{0,5:##.#0}\t ", matrix[i][k]);
-                    }
-                    
-                    
-                    
-                    
-                }
-                Console.WriteLine();
-            }
+            return new SparceMatrixEnumerator((SparseVector[])matrix);
         }
 
         public void collapse()
         {
+            SparseVector[] c_matrix = (SparseVector[])matrix;
             for (int i = 0; i < RowNumber; i++)
             {
                 for (int j = 0; j < ColumnNumber; j++)
                 {
-                    if (matrix[i][j] == 0)
+                    if (this[i, j] == 0)
                     {
-                       matrix[i].removeElement(j);
-                     
+                        c_matrix[i].removeElement(j);
+
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Models;
+﻿using IndependentWork1.Interfaces;
+using IndependentWork1.Models;
 using System;
 
 namespace IndependentWork1.Realization
@@ -29,7 +30,7 @@ namespace IndependentWork1.Realization
                 Console.Write("--------");
             }
         }
-        public void DrawBorder(SomeMatrix matrix)
+        public void DrawBorder(IMatrix matrix)
         {
 
             printLine(matrix.ColumnNumber);
@@ -61,7 +62,7 @@ namespace IndependentWork1.Realization
             Console.Write("|");
         }
 
-        public void DrawMatrix(SomeMatrix matrix)
+        public void DrawMatrix(IMatrix matrix)
         {
             for (int i = 0; i < matrix.RowNumber; i++)
             {

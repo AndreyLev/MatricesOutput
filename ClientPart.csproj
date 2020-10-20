@@ -70,6 +70,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="IndependentWork1\Decorator\RenumberingDecorator.cs" />
     <Compile Include="IndependentWork1\Interfaces\IMatrix.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVector.cs" />
     <Compile Include="IndependentWork1\Models\DenseMatrix.cs" />

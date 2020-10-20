@@ -1,14 +1,15 @@
-﻿using IndependentWork1.Models;
+﻿using IndependentWork1.Interfaces;
+using IndependentWork1.Models;
 
 
 namespace IndependentWork1.Realization
 {
     public interface IDrawer
     {
-        void DrawBorder(SomeMatrix matrix);
+        void DrawBorder(IMatrix matrix);
         void DrawCellBorder(double el);
         void DrawCell(double el);
 
-        void DrawMatrix(SomeMatrix matrix);
+        void DrawMatrix(IMatrix matrix);
     }
 }

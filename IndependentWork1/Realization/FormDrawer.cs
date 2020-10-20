@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Models;
+﻿using IndependentWork1.Interfaces;
+using IndependentWork1.Models;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -44,7 +45,7 @@ namespace IndependentWork1.Realization
             currentX = 30;
             currentY = 30;
         }
-        public void DrawBorder(SomeMatrix matrix)
+        public void DrawBorder(IMatrix matrix)
         {
             ResetCurrentValues();
             int x = currentX - 10;
@@ -68,7 +69,7 @@ namespace IndependentWork1.Realization
             cellHandler?.Invoke(el);
         }
 
-        public void DrawMatrix(SomeMatrix matrix)
+        public void DrawMatrix(IMatrix matrix)
         {
             ResetCurrentValues();
  

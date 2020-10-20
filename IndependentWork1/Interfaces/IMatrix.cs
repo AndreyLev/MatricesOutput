@@ -12,10 +12,15 @@ namespace IndependentWork1.Interfaces
 
         double this[int rowIndex, int columnIndex] { get; set; }
 
+        IVector this[int rowIndex] { get; set; }
+
+
         double getValue(int rowIndex, int columnIndex);
 
         int setValue(double value, int rowIndex, int columnIndex);
 
         void Draw();
+
+        void DoDrawBorder();
     }
 }

@@ -10,7 +10,7 @@ namespace IndependentWork1.Models
         public IVector[] matrix;
         protected IDrawer drawer;
 
-        public IVector[] VectorArr
+        public IVector[] Matrix
         {
             get { return matrix; }
         }
@@ -33,6 +33,18 @@ namespace IndependentWork1.Models
         public int RowNumber { get; protected set;  }
 
         public int ColumnNumber { get; protected set;  }
+
+        public IVector this[int rowIndex]
+        {
+            get { return matrix[rowIndex]; }
+            set
+            {
+                if (value is IVector)
+                {
+                    matrix[rowIndex] = value;
+                }
+            }
+        }
 
         public abstract void Draw();
 

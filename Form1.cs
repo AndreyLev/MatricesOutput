@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using IndependentWork1.Decorator;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 
@@ -14,6 +16,7 @@ namespace ClientPart
         SomeMatrix matrix;
         ConsoleDrawer consoleDrawer;
         FormDrawer formDrawer;
+        IMatrix matrixDecorator;
 
         
         public Form1()
@@ -98,8 +101,9 @@ namespace ClientPart
             int dmColumnCount = 6; 
             Console.Clear();
             matrix = new DenseMatrix(dmRowCount, dmColumnCount, formDrawer);
+            matrixDecorator = new RenumberingDecorator(matrix);
            
-            MatrixInitiator.FillMatrix(matrix, 15, 15);
+            MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
 
             DrawMatrixDependingOnCheckbox();
 
@@ -112,7 +116,8 @@ namespace ClientPart
             int smRowCount = 6;
             int smColumnCount = 7;
             matrix = new SparseMatrix(smRowCount, smColumnCount, consoleDrawer);
-            MatrixInitiator.FillMatrix(matrix, 15, 15);
+            matrixDecorator = new RenumberingDecorator(matrix);
+            MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
              DrawMatrixDependingOnCheckbox();
 
         }
@@ -126,6 +131,37 @@ namespace ClientPart
                 DrawMatrixDependingOnCheckbox();
             }
             
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Console.Clear();
+                if (matrixDecorator != null)
+                {
+                    RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
+                    mxDecorator.RenumberColumns(0, 1);
+                    mxDecorator.RenumberRows(0, 1);
+                    DrawMatrixDependingOnCheckbox();
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Строки и/или столбца с таким индексами в матрице нет");
+            }
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Console.Clear();
+            if (matrixDecorator != null)
+            {
+                RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
+                mxDecorator.ResetMatrix();
+                DrawMatrixDependingOnCheckbox();
+            }
         }
     }
 }
