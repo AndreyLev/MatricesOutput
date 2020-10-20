@@ -141,14 +141,36 @@ namespace ClientPart
                 if (matrixDecorator != null)
                 {
                     RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
-                    mxDecorator.RenumberColumns(0, 1);
-                    mxDecorator.RenumberRows(0, 1);
+                    Random rnd = new Random();
+                    int rndRowFirst = rnd.Next(matrix.RowNumber);
+                    int rndRowSecond;
+                    do
+                    {
+                        rndRowSecond = rnd.Next(matrix.RowNumber);
+                    } while (rndRowFirst == rndRowSecond);
+                    
+                    
+                    mxDecorator.RenumberRows(rndRowFirst, rndRowSecond);
+
+                    int rndColFirst = rnd.Next(matrix.ColumnNumber);
+                    int rndColSecond;
+                    do
+                    {
+                        rndColSecond = rnd.Next(matrix.ColumnNumber);
+                    } while (rndColSecond == rndColFirst);
+
+                    mxDecorator.RenumberColumns(rndColFirst, rndColSecond);               
                     DrawMatrixDependingOnCheckbox();
+
+                    string outputMessage = string.Format("Были поменяны строки с номерами {0} и {1}" +
+                        "\nИ стобцы с номерами {2} и {3}", rndRowFirst+1, rndRowSecond+1, rndColFirst+1, rndColSecond+1);
+
+                    MessageBox.Show(outputMessage);
                 }
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Строки и/или столбца с таким индексами в матрице нет");
+                MessageBox.Show("Строки и/или столбца с такими/таким индексами/индексом в матрице нет");
             }
             
         }
