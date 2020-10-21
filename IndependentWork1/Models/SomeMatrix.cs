@@ -26,7 +26,10 @@ namespace IndependentWork1.Models
         }
         public virtual double this[int rowIndex, int columnIndex]
         { 
-            get { return matrix[rowIndex][columnIndex];  }
+            get {
+                if (rowIndex >= RowNumber || columnIndex >= ColumnNumber) return 0;
+                return matrix[rowIndex][columnIndex]; 
+            }
             set { matrix[rowIndex][columnIndex] = value; }
         }
 

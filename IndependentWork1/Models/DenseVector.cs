@@ -13,7 +13,10 @@ namespace IndependentWork1.Models
 
         public double this[int index]
         {
-            get { return coords[index];  }
+            get {
+                if (index >= DIM) return 0;
+                return coords[index];  
+            }
             set { coords[index] = value; }
         }
 

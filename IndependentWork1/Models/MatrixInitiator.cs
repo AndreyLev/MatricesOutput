@@ -90,5 +90,16 @@ namespace IndependentWork1.Models
             }
             ShuffleMatrix(matrix);
         }
+
+        public static void FillMatrixSpecifiedValue(IMatrix matrix, double value)
+        {
+            for (int i = 0; i < matrix.RowNumber; i++)
+            {
+                for (int j = 0; j < matrix.ColumnNumber; j++)
+                {
+                    matrix[i, j] = value;
+                }
+            }
+        }
     }
 }

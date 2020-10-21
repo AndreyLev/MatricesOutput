@@ -11,5 +11,7 @@ namespace IndependentWork1.Realization
         void DrawCell(double el);
 
         void DrawMatrix(IMatrix matrix);
+
+        void DrawMatrixGroup(IMatrix matrix);
     }
 }

@@ -91,5 +91,10 @@ namespace IndependentWork1.Realization
 
             }
         }
+
+        public void DrawMatrixGroup(IMatrix matrix)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

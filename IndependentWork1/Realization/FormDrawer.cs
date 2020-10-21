@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Composite;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System.Drawing;
 using System.Windows.Forms;
@@ -92,6 +93,16 @@ namespace IndependentWork1.Realization
                 currentX = 30;
                 currentY += yStep;
             }
+        }
+
+        /* Code below relates on fourth lab work */
+
+        public void DrawMatrixGroup(IMatrix matrix)
+        {
+            // throw new System.NotImplementedException();
+
+            HorizontalMatrixGroup matrixGroup = (HorizontalMatrixGroup)matrix;
+
         }
     }
 }

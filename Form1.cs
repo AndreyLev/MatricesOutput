@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -184,6 +186,23 @@ namespace ClientPart
                 mxDecorator.ResetMatrix();
                 DrawMatrixDependingOnCheckbox();
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            List<IMatrix> matrixList = new List<IMatrix>();
+            matrixList.Add(new DenseMatrix(2, 2, consoleDrawer));
+            matrixList.Add(new DenseMatrix(3, 3, consoleDrawer));
+            matrixList.Add(new DenseMatrix(5, 1, consoleDrawer));
+            matrixList.Add(new DenseMatrix(1, 1, consoleDrawer));
+            
+            for (int i = 1; i <= matrixList.Count; i++)
+            {
+                MatrixInitiator.FillMatrixSpecifiedValue(matrixList[i - 1], i);
+            }
+
+            HorizontalMatrixGroup matrixGroup = new HorizontalMatrixGroup(matrixList);
+            matrixGroup.Draw();
         }
     }
 }
