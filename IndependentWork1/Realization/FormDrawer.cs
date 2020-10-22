@@ -27,10 +27,10 @@ namespace IndependentWork1.Realization
 
         public Graphics GraphicsObj { get { return g; } }
 
-        public FormDrawer(Form graphicsForm)
+        public FormDrawer(Form graphicsForm, Graphics g)
         {
             this.graphicsForm = graphicsForm;
-            g = graphicsForm.CreateGraphics();
+            this.g = g;
             myPen = new Pen(Color.Red, 2);
             drawFont = new Font("Arial", 16);
             myBrush = new SolidBrush(Color.Red);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Decorator;
@@ -15,10 +16,11 @@ namespace ClientPart
         const int graphicsFormWidth = 800;
         const int graphicsFormHeight = 600;
         Form graphicsForm;
-        SomeMatrix matrix;
+        IMatrix matrix;
         ConsoleDrawer consoleDrawer;
         FormDrawer formDrawer;
         IMatrix matrixDecorator;
+        Graphics g;
 
         
         public Form1()
@@ -32,14 +34,16 @@ namespace ClientPart
             graphicsForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             graphicsForm.Show();
             consoleDrawer = new ConsoleDrawer();
-            formDrawer = new FormDrawer(graphicsForm);
+            g = graphicsForm.CreateGraphics();
+            formDrawer = new FormDrawer(graphicsForm, g);   
 
         }
         
         private void changeDrawers()
         {
+           
             if (matrix.Drawer is ConsoleDrawer)
-                matrix.Drawer = formDrawer;
+               matrix.Drawer = formDrawer;
             else
                 matrix.Drawer = consoleDrawer;
         }
@@ -56,9 +60,10 @@ namespace ClientPart
 
         private void setConsoleDrawerIfForm()
         {
+
             if (matrix.Drawer is FormDrawer)
             {
-                matrix.Drawer = consoleDrawer;
+               matrix.Drawer = consoleDrawer;
             }
                 
         }
@@ -96,9 +101,15 @@ namespace ClientPart
             Console.WriteLine();
         }
 
+        void OpenRenumberingButtons()
+        {
+            button3.Enabled = true;
+            button4.Enabled = true;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-  
+
+            OpenRenumberingButtons();
             int dmRowCount = 7;
             int dmColumnCount = 6; 
             Console.Clear();
@@ -110,11 +121,16 @@ namespace ClientPart
             DrawMatrixDependingOnCheckbox();
 
         }
+        private void ClearDrawAreas()
+        {
+            Console.Clear();
+            g.Clear(SystemColors.Control);   
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            Console.Clear();
+            OpenRenumberingButtons();
+            ClearDrawAreas();
             int smRowCount = 6;
             int smColumnCount = 7;
             matrix = new SparseMatrix(smRowCount, smColumnCount, consoleDrawer);
@@ -126,8 +142,8 @@ namespace ClientPart
 
         private void checkBox1_Click(object sender, EventArgs e)
         {
-             
-            Console.Clear();
+
+            ClearDrawAreas();
             if (matrix != null)
             {     
                 DrawMatrixDependingOnCheckbox();
@@ -139,7 +155,13 @@ namespace ClientPart
         {
             try
             {
-                Console.Clear();
+                ClearDrawAreas();
+                /* It should be deleted to reset matrix from scratch */
+                if (matrix != null)
+                {
+                    matrixDecorator = new RenumberingDecorator(matrix);
+                }
+
                 if (matrixDecorator != null)
                 {
                     RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
@@ -179,7 +201,7 @@ namespace ClientPart
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Console.Clear();
+            ClearDrawAreas();
             if (matrixDecorator != null)
             {
                 RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
@@ -190,6 +212,10 @@ namespace ClientPart
 
         private void button5_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
+            button4.Enabled = false;
+            ClearDrawAreas();
+
             List<IMatrix> matrixList = new List<IMatrix>();
             matrixList.Add(new DenseMatrix(2, 2, consoleDrawer));
             matrixList.Add(new DenseMatrix(3, 3, consoleDrawer));
@@ -201,18 +227,9 @@ namespace ClientPart
                 MatrixInitiator.FillMatrixSpecifiedValue(matrixList[i - 1], i);
             }
 
-            HorizontalMatrixGroup matrixGroup = new HorizontalMatrixGroup(matrixList);
-            matrixGroup.Draw();
+            matrix = new HorizontalMatrixGroup(matrixList);
+            DrawMatrixDependingOnCheckbox();
 
-            Console.WriteLine();
-            for (int i = 0; i < matrixGroup.RowNumber; i++)
-            {
-                for (int j = 0; j < matrixGroup.ColumnNumber; j++)
-                {
-                    Console.Write("{0,-5:00.00} ", matrixGroup[i, j]);
-                }
-                Console.WriteLine();
-            }
         }
     }
 }

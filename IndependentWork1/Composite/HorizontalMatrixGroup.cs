@@ -1,5 +1,6 @@
 ﻿using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
+using IndependentWork1.Realization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,9 +28,10 @@ namespace ClientPart.IndependentWork1.Composite
             get
             {
                 if (rowIndex >= RowNumber) return null;
-
-                IVector vector = new DenseVector(RowNumber); ;
                 
+
+                IVector vector = new DenseVector(ColumnNumber); ;
+
                 List<double> values = new List<double>();
                 for (int matrixNumber = 0; matrixNumber < matrixGroup.Count; matrixNumber++)
                 {
@@ -42,7 +44,7 @@ namespace ClientPart.IndependentWork1.Composite
                 {
                     vector[i] = values[i];
                 }
-                
+
                 return vector;
             }
             set
@@ -88,10 +90,10 @@ namespace ClientPart.IndependentWork1.Composite
             {
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
-               
+
                 int matrixIndex = getDesiredMatrixIndex(ref columnIndex, rowIndex);
                 //Console.WriteLine("rowIndex: {0} | columnIndex: {1} | matrixIndex: {2}",
-                  // rowIndex, columnIndex, matrixIndex);
+                // rowIndex, columnIndex, matrixIndex);
                 //Console.WriteLine("[{0}]", matrixIndex);
                 return matrixGroup[matrixIndex][rowIndex, columnIndex];
             }
@@ -121,6 +123,10 @@ namespace ClientPart.IndependentWork1.Composite
             }
         }
 
+        public IDrawer Drawer {
+            get { return matrixGroup[0].Drawer; }
+            set { matrixGroup[0].Drawer = value; }
+        }
         public void DoDrawBorder()
         {
             if (matrixGroup.Count > 0)

@@ -1,4 +1,5 @@
 ﻿using IndependentWork1.Interfaces;
+using IndependentWork1.Realization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +38,12 @@ namespace IndependentWork1.Decorator
         public int ColumnNumber
         {
             get { return matrix.ColumnNumber; }
+        }
+
+        public IDrawer Drawer 
+        { 
+            get { return matrix.Drawer; }
+            set { matrix.Drawer = value; }
         }
 
         public IVector this[int rowIndex]
