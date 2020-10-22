@@ -64,7 +64,7 @@ namespace ClientPart.IndependentWork1.Composite
             }
         }
 
-        private int getDesiredMatrixIndex(int columnIndex)
+        private int getDesiredMatrixIndex(ref int columnIndex, int rowIndex)
         {
             int intermediateColumnSum = 0;
             int desiredMatrixIndex = 0;
@@ -76,8 +76,10 @@ namespace ClientPart.IndependentWork1.Composite
                     desiredMatrixIndex = i;
                     break;
                 }
-                i++;
+                desiredMatrixIndex++;
             }
+
+            columnIndex = matrixGroup[desiredMatrixIndex].ColumnNumber - (intermediateColumnSum - columnIndex);
             return desiredMatrixIndex;
         }
 
@@ -86,8 +88,11 @@ namespace ClientPart.IndependentWork1.Composite
             {
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
-
-                int matrixIndex = getDesiredMatrixIndex(columnIndex);
+               
+                int matrixIndex = getDesiredMatrixIndex(ref columnIndex, rowIndex);
+                //Console.WriteLine("rowIndex: {0} | columnIndex: {1} | matrixIndex: {2}",
+                  // rowIndex, columnIndex, matrixIndex);
+                //Console.WriteLine("[{0}]", matrixIndex);
                 return matrixGroup[matrixIndex][rowIndex, columnIndex];
             }
             set
@@ -95,7 +100,7 @@ namespace ClientPart.IndependentWork1.Composite
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
 
-                int matrixIndex = getDesiredMatrixIndex(columnIndex);
+                int matrixIndex = getDesiredMatrixIndex(ref columnIndex, rowIndex);
                 matrixGroup[matrixIndex][rowIndex, columnIndex] = value;
             }
         }

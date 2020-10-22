@@ -203,6 +203,16 @@ namespace ClientPart
 
             HorizontalMatrixGroup matrixGroup = new HorizontalMatrixGroup(matrixList);
             matrixGroup.Draw();
+
+            Console.WriteLine();
+            for (int i = 0; i < matrixGroup.RowNumber; i++)
+            {
+                for (int j = 0; j < matrixGroup.ColumnNumber; j++)
+                {
+                    Console.Write("{0,-5:00.00} ", matrixGroup[i, j]);
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
