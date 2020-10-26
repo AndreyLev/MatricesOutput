@@ -20,9 +20,9 @@ namespace IndependentWork1.Models
             set { drawer = value; } 
         }
 
-        protected SomeMatrix(IDrawer drawer)
+        protected SomeMatrix()
         {
-            this.drawer = drawer;
+            this.drawer = new ConsoleDrawer();
         }
         public virtual double this[int rowIndex, int columnIndex]
         { 
@@ -30,7 +30,10 @@ namespace IndependentWork1.Models
                 if (rowIndex >= RowNumber || columnIndex >= ColumnNumber) return 0;
                 return matrix[rowIndex][columnIndex]; 
             }
-            set { matrix[rowIndex][columnIndex] = value; }
+            set {
+                if (!(rowIndex >= RowNumber || columnIndex >= ColumnNumber))
+                    matrix[rowIndex][columnIndex] = value; 
+            }
         }
 
         public int RowNumber { get; protected set;  }

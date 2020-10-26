@@ -71,13 +71,14 @@ namespace ClientPart
         {
             if (checkBox1.Checked)
             {
-                
+
                 if (!IsMatrixBig())
                 {
                     matrix.DoDrawBorder();
                     changeDrawers();
                     matrix.DoDrawBorder();
-                } else
+                }
+                else
                 {
                     setConsoleDrawerIfForm();
                     matrix.DoDrawBorder();
@@ -85,7 +86,6 @@ namespace ClientPart
             }
             else
             {
-               
                 if (!IsMatrixBig())
                 {
                     matrix.Draw();
@@ -106,25 +106,27 @@ namespace ClientPart
             button3.Enabled = true;
             button4.Enabled = true;
         }
+
+        private void ClearDrawAreas()
+        {
+            Console.Clear();
+            g.Clear(SystemColors.Control);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-
+            ClearDrawAreas();
             OpenRenumberingButtons();
             int dmRowCount = 7;
             int dmColumnCount = 6; 
             Console.Clear();
-            matrix = new DenseMatrix(dmRowCount, dmColumnCount, formDrawer);
+            matrix = new DenseMatrix(dmRowCount, dmColumnCount);
             matrixDecorator = new RenumberingDecorator(matrix);
            
             MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
 
             DrawMatrixDependingOnCheckbox();
 
-        }
-        private void ClearDrawAreas()
-        {
-            Console.Clear();
-            g.Clear(SystemColors.Control);   
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -133,7 +135,7 @@ namespace ClientPart
             ClearDrawAreas();
             int smRowCount = 6;
             int smColumnCount = 7;
-            matrix = new SparseMatrix(smRowCount, smColumnCount, consoleDrawer);
+            matrix = new SparseMatrix(smRowCount, smColumnCount);
             matrixDecorator = new RenumberingDecorator(matrix);
             MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
              DrawMatrixDependingOnCheckbox();
@@ -212,24 +214,63 @@ namespace ClientPart
 
         private void button5_Click(object sender, EventArgs e)
         {
-            button3.Enabled = false;
-            button4.Enabled = false;
+            //button3.Enabled = false;
+            //button4.Enabled = false;
             ClearDrawAreas();
 
             List<IMatrix> matrixList = new List<IMatrix>();
-            matrixList.Add(new DenseMatrix(2, 2, consoleDrawer));
-            matrixList.Add(new DenseMatrix(3, 3, consoleDrawer));
-            matrixList.Add(new DenseMatrix(5, 1, consoleDrawer));
-            matrixList.Add(new DenseMatrix(1, 1, consoleDrawer));
-            
-            for (int i = 1; i <= matrixList.Count; i++)
+            //matrixList.Add(new DenseMatrix(2, 2, consoleDrawer));
+            //matrixList.Add(new DenseMatrix(3, 3, consoleDrawer));
+            matrixList.Add(new DenseMatrix(2, 2));
+            matrixList.Add(new DenseMatrix(3, 3));
+            matrixList.Add(new DenseMatrix(5, 1));
+            matrixList.Add(new DenseMatrix(1, 1));
+
+            List<IMatrix> testList = new List<IMatrix>();
+            testList.Add(new SparseMatrix(2, 2));
+            testList.Add(new SparseMatrix(6, 2));
+            for (int i = 1; i <= testList.Count; i++)
             {
-                MatrixInitiator.FillMatrixSpecifiedValue(matrixList[i - 1], i);
+                MatrixInitiator.FillMatrixSpecifiedValue(testList[i - 1], i + 4);
             }
 
-            matrix = new HorizontalMatrixGroup(matrixList);
+
+            for (int i = 1; i <= matrixList.Count; i++)
+            {
+                MatrixInitiator.FillMatrixSpecifiedValue(matrixList[i-1], i);
+            }
+
+            IMatrix testGroup = new HorizontalMatrixGroup(testList, consoleDrawer);
+            matrixList.Add(testGroup);
+            matrix = new HorizontalMatrixGroup(matrixList, consoleDrawer);
+            
             DrawMatrixDependingOnCheckbox();
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearDrawAreas();
+                if (matrix != null)
+                {
+
+                    if (matrix is HorizontalMatrixGroup)
+                    {
+                        matrix = new TransponseMatrixGroupDecorator(matrix);
+                    }
+                    else matrix = new TransponseMatrixDecorator(matrix);
+
+                    DrawMatrixDependingOnCheckbox();
+                }
+                else
+                    MessageBox.Show("Сначала нужно сгенерировать матрицу");
+            }
+            catch (NotSupportedException)
+            {
+                MessageBox.Show("В декоратор вертикальной группировки передана не горизонтальная группа матриц.");
+            }
         }
     }
 }

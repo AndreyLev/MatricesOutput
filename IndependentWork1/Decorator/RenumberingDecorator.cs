@@ -6,9 +6,8 @@ using System.Collections.Generic;
 
 namespace IndependentWork1.Decorator
 {
-    class RenumberingDecorator : IMatrix
+    class RenumberingDecorator : BaseDecorator
     {
-        IMatrix matrix;
         List<KeyValuePair<int,int>> rowChanges;
         List<KeyValuePair<int, int>> columnChanges;
         bool addFlag = true;
@@ -18,65 +17,13 @@ namespace IndependentWork1.Decorator
             rowChanges.Clear();
             columnChanges.Clear();
         }
-        public RenumberingDecorator(IMatrix matrix)
+        public RenumberingDecorator(IMatrix matrix) : base(matrix)
         {
-            this.matrix = matrix;
+            //this.matrix = matrix;
             rowChanges = new List<KeyValuePair<int, int>>();
             columnChanges = new List<KeyValuePair<int, int>>();
         }
-        public double this[int rowIndex, int columnIndex]
-        {
-            get { return matrix[rowIndex, columnIndex]; }
-            set { matrix[rowIndex, columnIndex] = value; }
-        }
-
-        public int RowNumber
-        {
-            get { return matrix.RowNumber; }
-        }
-
-        public int ColumnNumber
-        {
-            get { return matrix.ColumnNumber; }
-        }
-
-        public IDrawer Drawer 
-        { 
-            get { return matrix.Drawer; }
-            set { matrix.Drawer = value; }
-        }
-
-        public IVector this[int rowIndex]
-        {
-            get { return matrix[rowIndex]; }
-            set { matrix[rowIndex] = value; }
-        }
-
-        public void DoDrawBorder()
-        {
-            matrix.DoDrawBorder();
-        }
-
-        public void Draw()
-        {
-            matrix.Draw();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return matrix.GetEnumerator();
-        }
-
-        public double getValue(int rowIndex, int columnIndex)
-        {
-            return matrix.getValue(rowIndex, columnIndex);
-        }
-
-        public int setValue(double value, int rowIndex, int columnIndex)
-        {
-            return matrix.setValue(value, rowIndex, columnIndex);
-        }
-
+        
         public void RenumberRows(int rowOneIndex, int rowTwoIndex)
         {
             if (rowOneIndex >= matrix.RowNumber || rowTwoIndex >= matrix.RowNumber)
@@ -85,7 +32,7 @@ namespace IndependentWork1.Decorator
             double temp;
             for (int i = 0; i < matrix.ColumnNumber; i++)
             {
-                temp = matrix[rowOneIndex][i];
+                temp = matrix[rowOneIndex,i];
                 matrix[rowOneIndex,i] = matrix[rowTwoIndex,i];
                 matrix[rowTwoIndex, i] = temp;
             }

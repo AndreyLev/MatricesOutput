@@ -91,8 +91,13 @@ namespace IndependentWork1.Realization
                     currentX += xStep;
                 }
                 currentX = 30;
+                //currentX = oneMoreCurrentX;
                 currentY += yStep;
             }
+
+            //currentY = 30;
+            //oneMoreCurrentX += 30 * matrix.ColumnNumber * 3;
+            //currentX = oneMoreCurrentX;
         }
 
         /* Code below relates on fourth lab work */
@@ -104,5 +109,16 @@ namespace IndependentWork1.Realization
             HorizontalMatrixGroup matrixGroup = (HorizontalMatrixGroup)matrix;
 
         }
+
+        //public void Reset()
+        //{
+        //    currentX = 30;
+        //    currentY = 30;
+        //    width = 80;
+        //    height = 40;
+        //    xStep = 90;
+        //    yStep = 50;
+        //    oneMoreCurrentX = 30;
+        //}
     }
 }

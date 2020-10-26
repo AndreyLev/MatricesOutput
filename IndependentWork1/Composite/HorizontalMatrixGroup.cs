@@ -4,9 +4,8 @@ using IndependentWork1.Realization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientPart.IndependentWork1.Composite
 {
@@ -14,65 +13,83 @@ namespace ClientPart.IndependentWork1.Composite
     {
 
         List<IMatrix> matrixGroup;
+        List<IMatrix> matricesLinksList;
+        DenseVector[] matrix;
+        IDrawer drawer;
 
-        public HorizontalMatrixGroup(List<IMatrix> matrixGroup)
+        public List<IMatrix> MatricesList { get { return matricesLinksList; } }
+
+        public List<IMatrix> MatrixGroup { get { return matrixGroup; } }
+        public HorizontalMatrixGroup(List<IMatrix> matrixGroup, IDrawer drawer)
         {
             this.matrixGroup = matrixGroup;
+            this.drawer = drawer;
+            foreach (IMatrix matrix in matrixGroup)
+            {
+                matrix.Drawer = drawer;
+            }
+            matricesLinksList = getAllMatrices(this);
+            CollectTheMatrix();
+            //collectTheMatrix();
         }
 
-        public void AddMatrix(IMatrix matrix)
+        private void FillValuesWithIndex(int columnIndexOne, int columnIndexTwo, IMatrix matrixLink)
         {
-            matrixGroup.Add(matrix);
-        }
-        public IVector this[int rowIndex] {
-            get
+            for (int i = 0; i < RowNumber; i++)
             {
-                if (rowIndex >= RowNumber) return null;
-                
-
-                IVector vector = new DenseVector(ColumnNumber); ;
-
-                List<double> values = new List<double>();
-                for (int matrixNumber = 0; matrixNumber < matrixGroup.Count; matrixNumber++)
+                for (int j = columnIndexOne, k = 0; 
+                    j < columnIndexTwo && k < matrixLink.ColumnNumber; j++, k++)
                 {
-                    for (int column = 0; column < matrixGroup[matrixNumber].ColumnNumber; column++)
-                    {
-                        values.Add(matrixGroup[matrixNumber][rowIndex, column]);
-                    }
-                }
-                for (int i = 0; i < values.Count; i++)
-                {
-                    vector[i] = values[i];
-                }
-
-                return vector;
-            }
-            set
-            {
-                if (rowIndex >= RowNumber) throw new InvalidOperationException();
-
-                if (value is IVector)
-                {
-                    int index = value.DIM;
-                    for (int matrixNumber = 0; matrixNumber < matrixGroup.Count; matrixNumber++)
-                    {
-                        for (int column = 0; column < matrixGroup[matrixNumber].ColumnNumber; column++)
-                        {
-                            matrixGroup[matrixNumber][rowIndex, column] = value[index];
-                            index++;
-                        }
-                    }
+                    matrix[i][j] = matrixLink[i, k];
                 }
             }
         }
+        private void CollectTheMatrix()
+        {
+            matrix = new DenseVector[RowNumber];
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                matrix[i] = new DenseVector(ColumnNumber);
+            }
 
-        private int getDesiredMatrixIndex(ref int columnIndex, int rowIndex)
+            int currentIndexOne = 0;
+            int currentIndexTwo = 0;
+            foreach (IMatrix m in matrixGroup)
+            {
+                currentIndexTwo += m.ColumnNumber;
+                FillValuesWithIndex(currentIndexOne, currentIndexTwo, m);
+                currentIndexOne += m.ColumnNumber;
+            }
+        }
+        private void collectTheMatrixByMatricesLinks()
+        {
+            matrix = new DenseVector[RowNumber];
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                matrix[i] = new DenseVector(ColumnNumber);
+            }
+
+            int temp;
+            int matrixIndex;
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    temp = j;
+                    matrixIndex = getDesiredMatrixIndex(i, ref temp);
+                    matrix[i][j] = matricesLinksList[matrixIndex][i, temp];
+                }
+            }
+
+        }
+
+        private int getDesiredMatrixIndex(int rowIndex, ref int columnIndex)
         {
             int intermediateColumnSum = 0;
             int desiredMatrixIndex = 0;
-            for (int i = 0; i < matrixGroup.Count; i++)
+            for (int i = 0; i < matricesLinksList.Count; i++)
             {
-                intermediateColumnSum += matrixGroup[i].ColumnNumber;
+                intermediateColumnSum += matricesLinksList[i].ColumnNumber;
                 if (columnIndex < intermediateColumnSum)
                 {
                     desiredMatrixIndex = i;
@@ -81,9 +98,57 @@ namespace ClientPart.IndependentWork1.Composite
                 desiredMatrixIndex++;
             }
 
-            columnIndex = matrixGroup[desiredMatrixIndex].ColumnNumber - (intermediateColumnSum - columnIndex);
+            columnIndex = matricesLinksList[desiredMatrixIndex].ColumnNumber - (intermediateColumnSum - columnIndex);
             return desiredMatrixIndex;
         }
+
+        public List<IMatrix> getAllMatrices(IMatrix matrix)
+        {
+            List<IMatrix> matrixList = new List<IMatrix>();
+            if (matrix == null) return new List<IMatrix>(0); 
+            foreach (IMatrix mx in matrixGroup)
+            {
+                if (mx is SomeMatrix)
+                {
+                    matrixList.Add(mx);
+                }
+
+                if (mx is HorizontalMatrixGroup)
+                {
+                    HorizontalMatrixGroup mg = (HorizontalMatrixGroup)mx;
+                    matrixList.AddRange(mg.getAllMatrices(mg));
+                }
+            }
+
+            return matrixList;
+        }
+
+        public void AddMatrix(IMatrix matrix)
+        {
+            matrixGroup.Add(matrix);
+            matricesLinksList = getAllMatrices(this);
+            DenseVector[] newMatrix = new DenseVector[matrix.RowNumber];
+        } 
+
+        public IVector this[int rowIndex] {
+            get
+            {
+                if (rowIndex >= RowNumber) return null;
+
+                return matrix[rowIndex];
+            }
+            set
+            {
+                if (rowIndex >= RowNumber) throw new InvalidOperationException();
+
+                if (value is IVector)
+                {
+                    matrix[rowIndex] = (DenseVector)value;
+                }
+            }
+        }
+
+    
 
         public double this[int rowIndex, int columnIndex] {
             get
@@ -91,19 +156,14 @@ namespace ClientPart.IndependentWork1.Composite
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
 
-                int matrixIndex = getDesiredMatrixIndex(ref columnIndex, rowIndex);
-                //Console.WriteLine("rowIndex: {0} | columnIndex: {1} | matrixIndex: {2}",
-                // rowIndex, columnIndex, matrixIndex);
-                //Console.WriteLine("[{0}]", matrixIndex);
-                return matrixGroup[matrixIndex][rowIndex, columnIndex];
+                return matrix[rowIndex][columnIndex];
             }
             set
             {
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
 
-                int matrixIndex = getDesiredMatrixIndex(ref columnIndex, rowIndex);
-                matrixGroup[matrixIndex][rowIndex, columnIndex] = value;
+                matrix[rowIndex][columnIndex] = value;
             }
         }
 
@@ -124,33 +184,31 @@ namespace ClientPart.IndependentWork1.Composite
         }
 
         public IDrawer Drawer {
-            get { return matrixGroup[0].Drawer; }
-            set { matrixGroup[0].Drawer = value; }
+            get { return drawer; }
+            set 
+            {
+                drawer = value;
+            }
         }
         public void DoDrawBorder()
         {
             if (matrixGroup.Count > 0)
             {
-                SomeMatrix mx = (SomeMatrix)matrixGroup[0];
-                mx.Drawer.DrawBorder(this);
-
+                drawer.DrawBorder(this);
             }
         }
 
         public void Draw()
         {
-            
             if (matrixGroup.Count > 0)
             {
-                SomeMatrix mx = (SomeMatrix)matrixGroup[0];
-                mx.Drawer.DrawMatrix(this);
-                
+                drawer.DrawMatrix(this);
             }
         }
 
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            return matrix.GetEnumerator();
         }
 
         public double getValue(int rowIndex, int columnIndex)

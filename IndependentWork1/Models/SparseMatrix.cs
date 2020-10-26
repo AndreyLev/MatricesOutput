@@ -29,7 +29,7 @@ namespace IndependentWork1.Models
             }
         }
 
-        public SparseMatrix(int rowCount, int columnCount, IDrawer drawer) : base(drawer)
+        public SparseMatrix(int rowCount, int columnCount) : base()
         {
             matrix = new SparseVector[rowCount];
             for (int i = 0; i < matrix.Length; i++)
@@ -62,13 +62,11 @@ namespace IndependentWork1.Models
 
         public override void Draw()
         {
-            ClearDrawerWindowIfGrapics();
             drawer.DrawMatrix(this);
         }
 
         public override void DoDrawBorder()
         {
-            ClearDrawerWindowIfGrapics();
             drawer.DrawBorder(this);
         }
     }

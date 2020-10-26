@@ -9,7 +9,7 @@ namespace IndependentWork1.Models
     {
 
 
-        public DenseMatrix(int rowCount, int columnCount, IDrawer drawer) : base(drawer)
+        public DenseMatrix(int rowCount, int columnCount) : base()
         {
             
             matrix = new DenseVector[rowCount];
@@ -23,13 +23,11 @@ namespace IndependentWork1.Models
 
         public override void DoDrawBorder()
         {
-            ClearDrawerWindowIfGrapics();
             drawer.DrawBorder(this);
         }
 
         public override void Draw()
         {
-            ClearDrawerWindowIfGrapics();
             drawer.DrawMatrix(this);
         }
 
