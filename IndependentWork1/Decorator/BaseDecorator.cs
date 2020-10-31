@@ -3,6 +3,7 @@ using IndependentWork1.Realization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace IndependentWork1.Decorator
         {
             this.matrix = matrix;
         }
+
+        public IMatrix MATRIX { get { return matrix; } }
         public IVector this[int rowIndex]
         {
             get { return matrix[rowIndex]; }

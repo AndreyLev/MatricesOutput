@@ -12,6 +12,5 @@ namespace IndependentWork1.Realization
 
         void DrawMatrix(IMatrix matrix);
 
-        void DrawMatrixGroup(IMatrix matrix);
     }
 }

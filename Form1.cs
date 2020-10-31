@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Security.Policy;
 using System.Windows.Forms;
 using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Decorator;
@@ -21,6 +23,7 @@ namespace ClientPart
         FormDrawer formDrawer;
         IMatrix matrixDecorator;
         Graphics g;
+        bool transponseFlag = true;
 
         
         public Form1()
@@ -214,13 +217,11 @@ namespace ClientPart
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //button3.Enabled = false;
-            //button4.Enabled = false;
+           
             ClearDrawAreas();
 
             List<IMatrix> matrixList = new List<IMatrix>();
-            //matrixList.Add(new DenseMatrix(2, 2, consoleDrawer));
-            //matrixList.Add(new DenseMatrix(3, 3, consoleDrawer));
+            
             matrixList.Add(new DenseMatrix(2, 2));
             matrixList.Add(new DenseMatrix(3, 3));
             matrixList.Add(new DenseMatrix(5, 1));
@@ -250,27 +251,35 @@ namespace ClientPart
 
         private void button6_Click(object sender, EventArgs e)
         {
-            try
-            {
+          
                 ClearDrawAreas();
                 if (matrix != null)
                 {
 
-                    if (matrix is HorizontalMatrixGroup)
+                    if (matrix is SomeMatrix)
                     {
-                        matrix = new TransponseMatrixGroupDecorator(matrix);
+                        matrix = new TransponseMatrixDecorator(matrix);
+                    } 
+                    else if (matrix is HorizontalMatrixGroup)
+                    {
+                        matrix = new TransponseMatrixGroupDecorator(matrix, transponseFlag);
+                    } 
+                    else if (matrix is TransponseMatrixDecorator)
+                    {
+                        matrix = new TransponseMatrixDecorator(matrix);
+                    } else {
+                        BaseDecorator bd = (BaseDecorator)matrix;
+                        transponseFlag = transponseFlag ? false : true;
+                        matrix = new TransponseMatrixGroupDecorator(bd.MATRIX, transponseFlag);
                     }
-                    else matrix = new TransponseMatrixDecorator(matrix);
+
 
                     DrawMatrixDependingOnCheckbox();
                 }
                 else
                     MessageBox.Show("Сначала нужно сгенерировать матрицу");
-            }
-            catch (NotSupportedException)
-            {
-                MessageBox.Show("В декоратор вертикальной группировки передана не горизонтальная группа матриц.");
-            }
+            
+
         }
     }
 }

@@ -12,16 +12,14 @@ namespace IndependentWork1.Decorator
 {
     class TransponseMatrixDecorator : BaseDecorator
     {
-        IVector[] transposedMatrix;
         public TransponseMatrixDecorator(IMatrix matrix) : base(matrix)
         {
-            TransponseMatrix();
         }
 
         public override double this[int rowIndex, int columnIndex]
         {
-            get { return transposedMatrix[rowIndex][columnIndex]; }
-            set { transposedMatrix[rowIndex][columnIndex] = value; }
+            get { return matrix[columnIndex, rowIndex]; }
+            set { matrix[columnIndex,rowIndex] = value; }
         }
 
         public override int RowNumber
@@ -40,31 +38,5 @@ namespace IndependentWork1.Decorator
             }
         }
 
-        public virtual void TransponseMatrix()
-        {
-            transposedMatrix = new IVector[RowNumber];
-
-            for (int i = 0; i < RowNumber; i++)
-            {
-                    transposedMatrix[i] = new DenseVector(ColumnNumber);
-            }
-
-            if (matrix is SomeMatrix || matrix is TransponseMatrixDecorator)
-            {
-                for (int i = 0; i < RowNumber; i++)
-                {
-                    for (int j = 0; j < ColumnNumber; j++)
-                    {
-                        transposedMatrix[i][j] = matrix[j, i];
-                    }
-                }
-            }
-
-            if (matrix is HorizontalMatrixGroup)
-            {
-                HorizontalMatrixGroup mg = (HorizontalMatrixGroup)matrix;
-                
-            }
-        }
     }
 }

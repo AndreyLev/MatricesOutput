@@ -10,11 +10,6 @@ namespace IndependentWork1.Realization
         delegate void TopBottomCellBorderHandler(double d);
         CellHandler cellHandler;
         TopBottomCellBorderHandler tbHandler;
-        int currentPosition = 0;
-        int currentX = 0;
-        int currentY = 0;
-        int xStep = 10;
-        int yStep = 10;
 
         public ConsoleDrawer()
         {
@@ -22,14 +17,6 @@ namespace IndependentWork1.Realization
             tbHandler = null;
         }
 
-        //public void Reset()
-        //{
-        //    currentPosition = 0;
-        //    currentX = 0;
-        //    currentY = 0;
-        //    xStep = 10;
-        //    yStep = 10;
-        //}
 
         void printLine(double colNumber)
         {
@@ -91,15 +78,12 @@ namespace IndependentWork1.Realization
                         }
                         
                     }
-                    //Console.SetCursorPosition(currentX, currentY);
                     DrawCellBorder(matrix[i, j]);
                     cellHandler = DrawCell;
-                    //currentX += 7;
                    
 
                 }
-                //currentX = 0;
-                //currentY += 1;
+
                 Console.WriteLine();
                 if (i != matrix.RowNumber - 1 && tbHandler != null)
                 {
@@ -109,13 +93,7 @@ namespace IndependentWork1.Realization
 
             }
 
-            
-           // Console.WriteLine("Матрица отрисована");
         }
 
-        public void DrawMatrixGroup(IMatrix matrix)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

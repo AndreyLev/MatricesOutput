@@ -19,7 +19,6 @@ namespace IndependentWork1.Decorator
         }
         public RenumberingDecorator(IMatrix matrix) : base(matrix)
         {
-            //this.matrix = matrix;
             rowChanges = new List<KeyValuePair<int, int>>();
             columnChanges = new List<KeyValuePair<int, int>>();
         }
