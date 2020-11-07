@@ -18,15 +18,15 @@ namespace IndependentWork1.Decorator
 
         public override double this[int rowIndex, int columnIndex]
         {
-            get { return matrix[columnIndex, rowIndex]; }
-            set { matrix[columnIndex,rowIndex] = value; }
+            get { return this[columnIndex, rowIndex]; }
+            set {  }
         }
 
         public override int RowNumber
         {
             get
             {
-                return matrix.ColumnNumber;
+                return base.ColumnNumber;
             }
         }
 
@@ -34,9 +34,13 @@ namespace IndependentWork1.Decorator
         {
             get
             {
-                return matrix.RowNumber;
+                return base.RowNumber;
             }
         }
 
+        protected override IVector Create(int size)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

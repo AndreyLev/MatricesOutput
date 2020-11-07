@@ -78,7 +78,7 @@ namespace ClientPart.IndependentWork1.Composite
                 for (int j = columnIndexOne, k = 0; 
                     j < columnIndexTwo && k < matrixLink.ColumnNumber; j++, k++)
                 {
-                    matrix[i][j] = matrixLink[i, k];
+                    matrix[i,j] = matrixLink[i, k];
                 }
             }
         }
@@ -165,40 +165,20 @@ namespace ClientPart.IndependentWork1.Composite
             matricesLinksList = getAllMatrices(this);
         } 
 
-        public IVector this[int rowIndex] {
-            get
-            {
-                if (rowIndex >= RowNumber) throw new InvalidOperationException();
-
-                return matrix[rowIndex];
-            }
-            set
-            {
-                if (rowIndex >= RowNumber) throw new InvalidOperationException();
-
-                if (value is IVector)
-                {
-                    matrix[rowIndex] = (DenseVector)value;
-                }
-            }
-        }
-
-    
-
         public double this[int rowIndex, int columnIndex] {
             get
             {
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
 
-                return matrix[rowIndex][columnIndex];
+                return matrix[rowIndex,columnIndex];
             }
             set
             {
                 if (rowIndex >= RowNumber) throw new InvalidOperationException();
                 if (columnIndex >= ColumnNumber) throw new InvalidOperationException();
 
-                matrix[rowIndex][columnIndex] = value;
+                matrix[rowIndex,columnIndex] = value;
             }
         }
 
@@ -227,20 +207,5 @@ namespace ClientPart.IndependentWork1.Composite
             }
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return matrix.GetEnumerator();
-        }
-
-        public double getValue(int rowIndex, int columnIndex)
-        {
-            return this[rowIndex, columnIndex];
-        }
-
-        public int setValue(double value, int rowIndex, int columnIndex)
-        {
-            this[rowIndex, columnIndex] = value;
-            return 1;
-        }
     }
 }

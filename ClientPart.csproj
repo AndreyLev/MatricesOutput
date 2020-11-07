@@ -78,12 +78,10 @@
     <Compile Include="IndependentWork1\Interfaces\IMatrix.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVector.cs" />
     <Compile Include="IndependentWork1\Models\DenseMatrix.cs" />
-    <Compile Include="IndependentWork1\Models\DenseMatrixEnumerator.cs" />
     <Compile Include="IndependentWork1\Models\DenseVector.cs" />
     <Compile Include="IndependentWork1\Models\MatrixInitiator.cs" />
     <Compile Include="IndependentWork1\Models\MatrixStatistics.cs" />
     <Compile Include="IndependentWork1\Models\SomeMatrix.cs" />
-    <Compile Include="IndependentWork1\Models\SparceMatrixEnumerator.cs" />
     <Compile Include="IndependentWork1\Models\SparseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseVector.cs" />
     <Compile Include="IndependentWork1\Realization\ConsoleDrawer.cs" />

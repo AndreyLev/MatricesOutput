@@ -10,8 +10,5 @@ namespace IndependentWork1.Interfaces
 
         double this[int index] { get; set; }
         
-        double getValue(int index);
-
-        int setValue(int index, double value);
     }
 }

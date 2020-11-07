@@ -123,10 +123,8 @@ namespace ClientPart
             int dmRowCount = 7;
             int dmColumnCount = 6; 
             Console.Clear();
-            matrix = new DenseMatrix(dmRowCount, dmColumnCount);
-            matrixDecorator = new RenumberingDecorator(matrix);
-           
-            MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
+            matrix = new DenseMatrix(dmRowCount, dmColumnCount);          
+            MatrixInitiator.FillMatrix(matrix, 15, 15);
 
             DrawMatrixDependingOnCheckbox();
 
@@ -139,8 +137,7 @@ namespace ClientPart
             int smRowCount = 6;
             int smColumnCount = 7;
             matrix = new SparseMatrix(smRowCount, smColumnCount);
-            matrixDecorator = new RenumberingDecorator(matrix);
-            MatrixInitiator.FillMatrix(matrixDecorator, 15, 15);
+            MatrixInitiator.FillMatrix(matrix, 15, 15);
              DrawMatrixDependingOnCheckbox();
 
         }
@@ -161,15 +158,10 @@ namespace ClientPart
             try
             {
                 ClearDrawAreas();
-                /* It should be deleted to reset matrix from scratch */
+
                 if (matrix != null)
                 {
-                    matrixDecorator = new RenumberingDecorator(matrix);
-                }
-
-                if (matrixDecorator != null)
-                {
-                    RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
+                    RenumberingDecorator mxDecorator = new RenumberingDecorator(matrix);
                     Random rnd = new Random();
                     int rndRowFirst = rnd.Next(matrix.RowNumber);
                     int rndRowSecond;
@@ -188,7 +180,8 @@ namespace ClientPart
                         rndColSecond = rnd.Next(matrix.ColumnNumber);
                     } while (rndColSecond == rndColFirst);
 
-                    mxDecorator.RenumberColumns(rndColFirst, rndColSecond);               
+                    mxDecorator.RenumberColumns(rndColFirst, rndColSecond);
+                    matrix = mxDecorator;
                     DrawMatrixDependingOnCheckbox();
 
                     string outputMessage = string.Format("Были поменяны строки с номерами {0} и {1}" +
@@ -207,12 +200,12 @@ namespace ClientPart
         private void button4_Click(object sender, EventArgs e)
         {
             ClearDrawAreas();
-            if (matrixDecorator != null)
+            BaseDecorator baseDecorator = matrix as BaseDecorator;
+            if (baseDecorator != null)
             {
-                RenumberingDecorator mxDecorator = (RenumberingDecorator)matrixDecorator;
-                mxDecorator.ResetMatrix();
-                DrawMatrixDependingOnCheckbox();
+                matrix = baseDecorator.getMatrixSource();
             }
+            DrawMatrixDependingOnCheckbox();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -252,32 +245,32 @@ namespace ClientPart
         private void button6_Click(object sender, EventArgs e)
         {
           
-                ClearDrawAreas();
-                if (matrix != null)
-                {
+                //ClearDrawAreas();
+                //if (matrix != null)
+                //{
 
-                    if (matrix is SomeMatrix)
-                    {
-                        matrix = new TransponseMatrixDecorator(matrix);
-                    } 
-                    else if (matrix is HorizontalMatrixGroup)
-                    {
-                        matrix = new TransponseMatrixGroupDecorator(matrix, transponseFlag);
-                    } 
-                    else if (matrix is TransponseMatrixDecorator)
-                    {
-                        matrix = new TransponseMatrixDecorator(matrix);
-                    } else {
-                        BaseDecorator bd = (BaseDecorator)matrix;
-                        transponseFlag = transponseFlag ? false : true;
-                        matrix = new TransponseMatrixGroupDecorator(bd.MATRIX, transponseFlag);
-                    }
+                //    if (matrix is SomeMatrix)
+                //    {
+                //        matrix = new TransponseMatrixDecorator(matrix);
+                //    } 
+                //    else if (matrix is HorizontalMatrixGroup)
+                //    {
+                //        matrix = new TransponseMatrixGroupDecorator(matrix, transponseFlag);
+                //    } 
+                //    else if (matrix is TransponseMatrixDecorator)
+                //    {
+                //        matrix = new TransponseMatrixDecorator(matrix);
+                //    } else {
+                //        BaseDecorator bd = (BaseDecorator)matrix;
+                //        transponseFlag = transponseFlag ? false : true;
+                //        matrix = new TransponseMatrixGroupDecorator(bd.MATRIX, transponseFlag);
+                //    }
 
 
-                    DrawMatrixDependingOnCheckbox();
-                }
-                else
-                    MessageBox.Show("Сначала нужно сгенерировать матрицу");
+                //    DrawMatrixDependingOnCheckbox();
+                //}
+                //else
+                //    MessageBox.Show("Сначала нужно сгенерировать матрицу");
             
 
         }

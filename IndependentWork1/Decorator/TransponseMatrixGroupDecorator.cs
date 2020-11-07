@@ -37,7 +37,7 @@ namespace IndependentWork1.Decorator
                 if (transponseFlag)
                     return RowNumberSum();
                 else
-                    return MATRIX.RowNumber;
+                    return base.RowNumber;
             }
         }
 
@@ -48,7 +48,7 @@ namespace IndependentWork1.Decorator
                 if (transponseFlag)
                     return ColumnNumberMax();
                 else
-                    return MATRIX.ColumnNumber;
+                    return base.ColumnNumber;
             }
         }
 
@@ -69,7 +69,7 @@ namespace IndependentWork1.Decorator
             {
                 for (int j = 0; j < matrixLink.ColumnNumber; j++)
                 {
-                    dm[k][j] = matrixLink[i, j];
+                    dm[k,j] = matrixLink[i, j];
                 }
             }
         }
@@ -89,5 +89,9 @@ namespace IndependentWork1.Decorator
             matrixGroup.MATRIX = matrixValues;
         }
 
+        protected override IVector Create(int size)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

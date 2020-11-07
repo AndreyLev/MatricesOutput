@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,22 +13,33 @@ namespace IndependentWork1.Decorator
 {
     abstract class BaseDecorator : IMatrix
     {
-        protected IMatrix matrix;
+        private IMatrix matrix;
+
+        private IVector[] decorMatrix;
         public BaseDecorator(IMatrix matrix)
         {
             this.matrix = matrix;
+            decorMatrix = new IVector[RowNumber];
+            for (int i = 0; i < RowNumber; i++)
+            {
+                decorMatrix[i] = Create(ColumnNumber);
+            }
         }
 
-        public IMatrix MATRIX { get { return matrix; } }
-        public IVector this[int rowIndex]
+        protected abstract IVector Create(int size);
+
+        public IMatrix getMatrixSource()
         {
-            get { return matrix[rowIndex]; }
-            set { matrix[rowIndex] = value; }
+            BaseDecorator matrix_link = matrix as BaseDecorator;
+            if (matrix_link != null) return matrix_link.getMatrixSource();
+            return matrix;
         }
+
         public virtual double this[int rowIndex, int columnIndex]
         {
-            get { return matrix[rowIndex, columnIndex]; }
-            set { matrix[rowIndex, columnIndex] = value; }
+
+            get { return decorMatrix[rowIndex][columnIndex]; }
+            set { decorMatrix[rowIndex][columnIndex] = value; }
         }
 
         public virtual int RowNumber { get { return matrix.RowNumber; } }
@@ -50,20 +62,5 @@ namespace IndependentWork1.Decorator
             Drawer.DrawMatrix(this);
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return matrix.GetEnumerator();
-        }
-
-        public double getValue(int rowIndex, int columnIndex)
-        {
-            return this[rowIndex, columnIndex];
-        }
-
-        public int setValue(double value, int rowIndex, int columnIndex)
-        {
-            this[rowIndex, columnIndex] = value;
-            return 1;
-        }
     }
 }

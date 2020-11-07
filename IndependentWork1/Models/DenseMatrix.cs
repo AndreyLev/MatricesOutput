@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Realization;
+﻿using IndependentWork1.Interfaces;
+using IndependentWork1.Realization;
 using System;
 using System.Collections;
 
@@ -9,16 +10,14 @@ namespace IndependentWork1.Models
     {
 
 
-        public DenseMatrix(int rowCount, int columnCount) : base()
+        public DenseMatrix(int rowCount, int columnCount) : base(rowCount,columnCount)
         {
             
-            matrix = new DenseVector[rowCount];
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                matrix[i] = new DenseVector(columnCount);
-            }
-            RowNumber = rowCount;
-            ColumnNumber = columnCount;
+        }
+
+        protected override IVector create(int size)
+        {
+            return new DenseVector(size);
         }
 
         public override void DoDrawBorder()
@@ -29,24 +28,6 @@ namespace IndependentWork1.Models
         public override void Draw()
         {
             drawer.DrawMatrix(this);
-        }
-
-        public override IEnumerator GetEnumerator()
-        {
-            return new DenseMatrixEnumerator((DenseVector[]) matrix);
-        }
-
-        public void printMatrix()
-        {
-            
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    Console.Write("{0,-7:00.00} ", matrix[i][j]);
-                }
-                Console.WriteLine();
-            }
         }
 
     }

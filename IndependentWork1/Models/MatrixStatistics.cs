@@ -1,20 +1,24 @@
 ﻿using IndependentWork1.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IndependentWork1.Models
 {
-    public class MatrixStatistics
+    class MatrixStatistics
     {
         IMatrix matrix;
 
         public double ValuesSum
-        { 
+        {
             get
             {
                 double sum = 0;
-                foreach (double el in matrix) sum += el;              
+                for (int i = 0; i < matrix.RowNumber; i++)
+                {
+                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    {
+                        sum += matrix[i, j];
+                    }
+                }
                 return sum;
             }
         }
@@ -22,15 +26,21 @@ namespace IndependentWork1.Models
         {
             get
             {
-                return ValuesSum / (matrix.RowNumber * matrix.ColumnNumber);
+                return ValuesSum / nonValuesElementsCount;
             }
         }
         public double MaxValue
         {
             get
             {
-                double max = matrix[0,0];                             
-                foreach (double el in matrix) if (el > max) max = el;
+                double max = matrix[0, 0];
+                for (int i = 0; i < matrix.RowNumber; i++)
+                {
+                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    {
+                        if (matrix[i, j] > max) max = matrix[i, j];
+                    }
+                }
                 return max;
             }
         }
@@ -38,8 +48,14 @@ namespace IndependentWork1.Models
         {
             get
             {
-                int count = 0;        
-                foreach (double el in matrix) if (el != 0) count++;
+                int count = 0;
+                for (int i = 0; i < matrix.RowNumber; i++)
+                {
+                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    {
+                        if (matrix[i, j] > 0) count++;
+                    }
+                }
                 return count;
             }
         }
