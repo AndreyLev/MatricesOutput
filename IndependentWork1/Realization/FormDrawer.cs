@@ -97,5 +97,24 @@ namespace IndependentWork1.Realization
 
         }
 
+        public void DrawBorder()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DrawMatrix()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

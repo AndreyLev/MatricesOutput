@@ -42,13 +42,16 @@ namespace ClientPart
 
         }
         
-        private void changeDrawers()
+        private void drawMatrixWithOtherDrawers()
         {
-           
-            if (matrix.Drawer is ConsoleDrawer)
-               matrix.Drawer = formDrawer;
-            else
-                matrix.Drawer = consoleDrawer;
+            matrix.Draw(consoleDrawer);
+            // matrix.Draw(formDrawer);
+        }
+
+        private void drawMatrixBorderWithOtherDrawers()
+        {
+            matrix.DoDrawBorder(consoleDrawer);
+            // matrix.DoDrawBorder(formDrawer);
         }
 
         private bool IsMatrixBig()
@@ -61,48 +64,40 @@ namespace ClientPart
             return false;
         }
 
-        private void setConsoleDrawerIfForm()
-        {
+        
+        //private void DrawMatrixDependingOnCheckbox()
+        //{
+        //    if (checkBox1.Checked)
+        //    {
 
-            if (matrix.Drawer is FormDrawer)
-            {
-               matrix.Drawer = consoleDrawer;
-            }
-                
-        }
-        private void DrawMatrixDependingOnCheckbox()
-        {
-            if (checkBox1.Checked)
-            {
-
-                if (!IsMatrixBig())
-                {
-                    matrix.DoDrawBorder();
-                    changeDrawers();
-                    matrix.DoDrawBorder();
-                }
-                else
-                {
-                    setConsoleDrawerIfForm();
-                    matrix.DoDrawBorder();
-                }
-            }
-            else
-            {
-                if (!IsMatrixBig())
-                {
-                    matrix.Draw();
-                    changeDrawers();
-                    matrix.Draw();
-                }
-                else
-                {
-                    setConsoleDrawerIfForm();
-                    matrix.Draw();
-                }
-            }
-            Console.WriteLine();
-        }
+        //        if (!IsMatrixBig())
+        //        {
+        //            matrix.DoDrawBorder();
+        //            changeDrawers();
+        //            matrix.DoDrawBorder();
+        //        }
+        //        else
+        //        {
+        //            setConsoleDrawerIfForm();
+        //            matrix.DoDrawBorder();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (!IsMatrixBig())
+        //        {
+        //            matrix.Draw();
+        //            changeDrawers();
+        //            matrix.Draw();
+        //        }
+        //        else
+        //        {
+        //            setConsoleDrawerIfForm();
+        //            matrix.Draw();
+        //        }
+        //    }
+        //    Console.WriteLine();
+        //}
 
         void OpenRenumberingButtons()
         {
@@ -126,8 +121,7 @@ namespace ClientPart
             matrix = new DenseMatrix(dmRowCount, dmColumnCount);          
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
-            DrawMatrixDependingOnCheckbox();
-
+            drawMatrixWithOtherDrawers();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -138,7 +132,8 @@ namespace ClientPart
             int smColumnCount = 7;
             matrix = new SparseMatrix(smRowCount, smColumnCount);
             MatrixInitiator.FillMatrix(matrix, 15, 15);
-             DrawMatrixDependingOnCheckbox();
+
+            drawMatrixWithOtherDrawers();
 
         }
 
@@ -148,7 +143,13 @@ namespace ClientPart
             ClearDrawAreas();
             if (matrix != null)
             {     
-                DrawMatrixDependingOnCheckbox();
+                if (checkBox1.Checked)
+                {
+                    drawMatrixBorderWithOtherDrawers();
+                } else
+                {
+                    drawMatrixWithOtherDrawers();
+                }
             }
             
         }
@@ -182,7 +183,7 @@ namespace ClientPart
 
                     mxDecorator.RenumberColumns(rndColFirst, rndColSecond);
                     matrix = mxDecorator;
-                    DrawMatrixDependingOnCheckbox();
+                    //DrawMatrixDependingOnCheckbox();
 
                     string outputMessage = string.Format("Были поменяны строки с номерами {0} и {1}" +
                         "\nИ стобцы с номерами {2} и {3}", rndRowFirst+1, rndRowSecond+1, rndColFirst+1, rndColSecond+1);
@@ -205,7 +206,7 @@ namespace ClientPart
             {
                 matrix = baseDecorator.getMatrixSource();
             }
-            DrawMatrixDependingOnCheckbox();
+            //DrawMatrixDependingOnCheckbox();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -238,40 +239,25 @@ namespace ClientPart
             matrixList.Add(testGroup);
             matrix = new HorizontalMatrixGroup(matrixList, consoleDrawer);
             
-            DrawMatrixDependingOnCheckbox();
+            //DrawMatrixDependingOnCheckbox();
 
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-          
-                //ClearDrawAreas();
-                //if (matrix != null)
-                //{
 
-                //    if (matrix is SomeMatrix)
-                //    {
-                //        matrix = new TransponseMatrixDecorator(matrix);
-                //    } 
-                //    else if (matrix is HorizontalMatrixGroup)
-                //    {
-                //        matrix = new TransponseMatrixGroupDecorator(matrix, transponseFlag);
-                //    } 
-                //    else if (matrix is TransponseMatrixDecorator)
-                //    {
-                //        matrix = new TransponseMatrixDecorator(matrix);
-                //    } else {
-                //        BaseDecorator bd = (BaseDecorator)matrix;
-                //        transponseFlag = transponseFlag ? false : true;
-                //        matrix = new TransponseMatrixGroupDecorator(bd.MATRIX, transponseFlag);
-                //    }
+            ClearDrawAreas();
+            if (matrix != null)
+            {
+
+                matrix = new TransponseMatrixGroupDecorator(matrix, true);
 
 
-                //    DrawMatrixDependingOnCheckbox();
-                //}
-                //else
-                //    MessageBox.Show("Сначала нужно сгенерировать матрицу");
-            
+               // DrawMatrixDependingOnCheckbox();
+            }
+            else
+                MessageBox.Show("Сначала нужно сгенерировать матрицу");
+
 
         }
     }

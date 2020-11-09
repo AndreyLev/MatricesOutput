@@ -46,21 +46,24 @@ namespace IndependentWork1.Decorator
 
         public virtual int ColumnNumber { get { return matrix.ColumnNumber; } }
 
-        public IDrawer Drawer
-        {
-            get { return matrix.Drawer; }
-            set { matrix.Drawer = value; }
-        }
-
         public void DoDrawBorder()
         {
-            Drawer.DrawBorder(this);
+           
         }
 
         public void Draw()
         {
-            Drawer.DrawMatrix(this);
+           
         }
 
+        public void Draw(IDrawer drawer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DoDrawBorder(IDrawer drawer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

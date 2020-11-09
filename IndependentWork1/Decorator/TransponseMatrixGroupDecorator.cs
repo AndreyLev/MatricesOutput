@@ -2,6 +2,7 @@
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
+using IndependentWork1.Realization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ using System.Threading.Tasks;
 namespace IndependentWork1.Decorator
 {
     class TransponseMatrixGroupDecorator: BaseDecorator
-    { 
+    {
 
+        DenseMatrix matrixValues;
         HorizontalMatrixGroup matrixGroup;
 
         bool transponseFlag;
@@ -20,24 +22,40 @@ namespace IndependentWork1.Decorator
         public TransponseMatrixGroupDecorator(IMatrix matrix, bool transponseFlag) : base(matrix)
         {
 
-            matrixGroup = (HorizontalMatrixGroup)matrix;
+            //matrixGroup = (HorizontalMatrixGroup)matrix;
 
-            this.transponseFlag = transponseFlag;
+            //this.transponseFlag = transponseFlag;
 
-            if (transponseFlag)
-                CollectTheMatrix();
-            else
-                matrixGroup.doHorizontalGroup();
+            //if (transponseFlag)
+            //    CollectTheMatrix();
+            //else
+            //    matrixGroup.doHorizontalGroup();
+            matrixGroup = matrix as HorizontalMatrixGroup;
+            if (matrixGroup == null)
+            {
+                if (matrix is TransponseMatrixGroupDecorator)
+                {
+                    TransponseMatrixGroupDecorator transponseDecorator =
+                                            (TransponseMatrixGroupDecorator)matrix;
+                    matrixGroup = (HorizontalMatrixGroup)
+                                        transponseDecorator.getMatrixSource();
+                } else
+                {
+                    List<IMatrix> matrix_group = new List<IMatrix>() { matrix };
+                    matrixGroup = new HorizontalMatrixGroup(matrix_group, new ConsoleDrawer());
+                    
+                }
+
+            }
+            CollectTheMatrix();
+            
         }
 
         public override int RowNumber
         {
             get
             {
-                if (transponseFlag)
-                    return RowNumberSum();
-                else
-                    return base.RowNumber;
+                return matrixGroup.MATRIX_GROUP.Select(matrix => matrix.RowNumber).Sum();
             }
         }
 
@@ -45,21 +63,8 @@ namespace IndependentWork1.Decorator
         {
             get
             {
-                if (transponseFlag)
-                    return ColumnNumberMax();
-                else
-                    return base.ColumnNumber;
+                return matrixGroup.MATRIX_GROUP.Select(matrix => matrix.ColumnNumber).Max();
             }
-        }
-
-        private int RowNumberSum()
-        {
-            return matrixGroup.MatrixGroup.Select(matrix => matrix.RowNumber).Sum();
-        }
-
-        private int ColumnNumberMax()
-        {
-            return matrixGroup.MatrixGroup.Select(matrix => matrix.ColumnNumber).Max();
         }
 
         private void FillValuesWithIndex(int rowIndexOne, int rowIndexTwo, 
@@ -75,18 +80,16 @@ namespace IndependentWork1.Decorator
         }
         private void CollectTheMatrix()
         {
-            DenseMatrix matrixValues;
             matrixValues = new DenseMatrix(RowNumber, ColumnNumber);
 
             int currentIndexOne = 0;
             int currentIndexTwo = 0;
-            foreach (IMatrix m in matrixGroup.MatrixGroup)
+            foreach (IMatrix m in matrixGroup.MATRIX_GROUP)
             {
                 currentIndexTwo += m.RowNumber;
                 FillValuesWithIndex(currentIndexOne, currentIndexTwo, m, matrixValues);
                 currentIndexOne += m.RowNumber;
             }
-            matrixGroup.MATRIX = matrixValues;
         }
 
         protected override IVector Create(int size)

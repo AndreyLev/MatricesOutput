@@ -18,14 +18,5 @@ namespace IndependentWork1.Models
         {
         }
 
-        public override void Draw()
-        {
-            drawer.DrawMatrix(this);
-        }
-
-        public override void DoDrawBorder()
-        {
-            drawer.DrawBorder(this);
-        }
     }
 }

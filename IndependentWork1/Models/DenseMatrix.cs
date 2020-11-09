@@ -20,15 +20,7 @@ namespace IndependentWork1.Models
             return new DenseVector(size);
         }
 
-        public override void DoDrawBorder()
-        {
-            drawer.DrawBorder(this);
-        }
-
-        public override void Draw()
-        {
-            drawer.DrawMatrix(this);
-        }
+  
 
     }
 }

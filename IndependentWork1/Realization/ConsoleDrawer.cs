@@ -1,98 +1,99 @@
 ﻿using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization.Formatters;
+using System.Text;
 
 namespace IndependentWork1.Realization
 {
     public class ConsoleDrawer : IDrawer
     {
-        delegate void CellHandler(double d);
-        delegate void TopBottomCellBorderHandler(double d);
-        CellHandler cellHandler;
-        TopBottomCellBorderHandler tbHandler;
+        static string emptyElementTemplate = "{0,-5:00.00} ";
+        static string commonElementTemplate = "{0,-4:00.00} ";
+
+        List<string> data;
+
+        string bufferedElement;
+
+        int buffElNumber;
 
         public ConsoleDrawer()
         {
-            cellHandler = DrawCell;
-            tbHandler = null;
+            data = new List<string>();
+            bufferedElement = "";
+            buffElNumber = 0;
         }
 
 
-        void printLine(double colNumber)
-        {
-            Console.Write(" ");
-            for (int i = 0; i < colNumber; i++)
-            {
-                if (i == colNumber - 1)
-                {
-                    Console.Write("------");
-                    break;
-                }
-                Console.Write("--------");
-            }
-        }
         public void DrawBorder(IMatrix matrix)
         {
-
-            printLine(matrix.ColumnNumber);
-
-            Console.WriteLine();
-            tbHandler = printLine;
-            DrawMatrix(matrix);
-            tbHandler = null;
-
-
-            printLine(matrix.ColumnNumber);
-            Console.WriteLine();
-        }
-
-        public void DrawCell(double el)
-        {
-            Console.Write("{0,-4:00.00} ", el);
-        }
-
-        private void DrawEmptyElement(double el)
-        {
-            Console.Write("{0,5} ", " ");
-        }
-
-        public void DrawCellBorder(double el)
-        {
-            Console.Write("|");
-            cellHandler(el);
-            Console.Write("|");
-        }
-
-        public void DrawMatrix(IMatrix matrix)
-        {
-            for (int i = 0; i < matrix.RowNumber; i++)
+            int borderLength = matrix.ColumnNumber * 10;
+            string border = "";
+            while (borderLength-- != 0)
             {
-                for (int j = 0; j < matrix.ColumnNumber; j++)
-                {
-                    
-                    if (matrix[i,j] == 0)
-                    {
-                        if (matrix is SparseMatrix)
-                        {
-                            cellHandler = DrawEmptyElement;
-                        }
-                        
-                    }
-                    DrawCellBorder(matrix[i, j]);
-                    cellHandler = DrawCell;
-                   
-
-                }
-
-                Console.WriteLine();
-                if (i != matrix.RowNumber - 1 && tbHandler != null)
-                {
-                    tbHandler(matrix.ColumnNumber);
-                    Console.WriteLine();
-                }
-
+                border += "-";
+                if (borderLength == 0) border += "\n";
             }
 
+            data.Insert(0, border);
+            data.Insert(data.Count, border);
+
+            int insertIndex = 1;
+            for (int i = 0; i < matrix.RowNumber-1; i++)
+            {
+                insertIndex += matrix.ColumnNumber;
+                data.Insert(insertIndex, border);
+                insertIndex++;
+            }
+            
+        }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
+        {
+            bufferedElement = "";
+            switch (matrix)
+            {
+                case SparseMatrix matr:
+                    if (matr[rowIndex, columnIndex] == 0)
+                    {
+                        bufferedElement += String.Format(emptyElementTemplate, "");
+                        break;
+                    }
+                    else goto default;       
+                default:
+                    bufferedElement += String.Format(commonElementTemplate, matrix[rowIndex, columnIndex]);
+                    break;
+            }
+            if (columnIndex == matrix.ColumnNumber - 1) bufferedElement += "\n";
+            data.Add(bufferedElement);
+            buffElNumber++;
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
+        {
+            DrawCell(matrix, rowIndex, columnIndex);
+            if (data[buffElNumber - 1].Contains('\n'))
+            {
+                data[buffElNumber-1] = 
+                    data[buffElNumber - 1].Remove(data[buffElNumber-1].Length-1);
+            }
+
+            data[buffElNumber - 1] = String.Format("| {0} |", data[buffElNumber - 1]);
+            if (columnIndex == matrix.ColumnNumber - 1) data[buffElNumber - 1] += "\n";
+        }
+
+        public void DrawMatrix()
+        {
+            foreach (string str in data)
+            {
+                Console.Write(str);
+            }
+
+            data.Clear();
+            buffElNumber = 0;
         }
 
     }

@@ -8,12 +8,6 @@ namespace IndependentWork1.Models
     public abstract class SomeMatrix : IMatrix
     {
         private IVector[] matrix;
-        protected IDrawer drawer;
-
-        public IDrawer Drawer { 
-            get { return drawer; }
-            set { drawer = value; } 
-        }
 
         protected SomeMatrix(int rowCount, int columnNumber)
         {
@@ -24,7 +18,6 @@ namespace IndependentWork1.Models
             }
             RowNumber = rowCount;
             ColumnNumber = columnNumber;
-            drawer = new ConsoleDrawer();
         }
 
         protected abstract IVector create(int size);
@@ -45,19 +38,33 @@ namespace IndependentWork1.Models
         public int ColumnNumber { get; protected set;  }
 
 
-        public abstract void Draw();
+        public void Draw(IDrawer drawer)
+        {
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    drawer.DrawCell(this, i,j);
+                }
+            }
+            drawer.DrawMatrix();
+        }
 
-        public abstract void DoDrawBorder();
+        public void DoDrawBorder(IDrawer drawer)
+        {
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    drawer.DrawCellBorder(this, i, j);
+                }
+            }
+            drawer.DrawBorder(this);
+            drawer.DrawMatrix();
+        }
      
         
-        public void ClearDrawerWindowIfGrapics()
-        {
-            if (drawer is FormDrawer)
-            {
-                FormDrawer formDrawer = (FormDrawer) drawer;
-                formDrawer.GraphicsObj.Clear(SystemColors.Control);
-            }
-        } 
+    
         
     }
 }

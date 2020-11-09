@@ -11,12 +11,10 @@ namespace IndependentWork1.Interfaces
         int RowNumber { get; }
         int ColumnNumber { get; }
 
-        IDrawer Drawer { get; set; }
-
         double this[int rowIndex, int columnIndex] { get; set; }
 
-        void Draw();
+        void Draw(IDrawer drawer);
 
-        void DoDrawBorder();
+        void DoDrawBorder(IDrawer drawer);
     }
 }
