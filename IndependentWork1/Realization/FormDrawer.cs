@@ -1,8 +1,10 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -10,7 +12,6 @@ namespace IndependentWork1.Realization
 {
     class FormDrawer : IDrawer
     {
-        delegate void CellHandler(double el);
 
         static string emptyElementTemplate = "{0,-5:00.00} ";
         static string cellStringFormat = "{0,4:00.00} ";
@@ -30,8 +31,9 @@ namespace IndependentWork1.Realization
         int yStep = 50;
         StringFormat strFormat;
         RectangleF drawRect;
-        CellHandler cellHandler;
         Dictionary<RectangleF, string> data;
+        List<Rectangle> rectBorder;
+        Rectangle borderRectangle;
 
         public Graphics GraphicsObj { get { return g; } }
 
@@ -46,8 +48,8 @@ namespace IndependentWork1.Realization
             strFormat.Alignment = StringAlignment.Center;
             strFormat.LineAlignment = StringAlignment.Center;
             drawRect = new RectangleF(currentX, currentY, width, height);
-            cellHandler = DrawCell;
             data = new Dictionary<RectangleF, string>();
+            rectBorder = new List<Rectangle>();
         }
 
         void ResetCurrentValues()
@@ -55,6 +57,7 @@ namespace IndependentWork1.Realization
             currentX = 30;
             currentY = 30;
         }
+      
         public void DrawBorder(IMatrix matrix)
         {
             ResetCurrentValues();
@@ -62,63 +65,37 @@ namespace IndependentWork1.Realization
             int y = currentY - 10;
             int borderWidth = xStep * matrix.ColumnNumber + 10;
             int borderHeight = yStep * matrix.RowNumber + 10;
-            g.DrawRectangle(myPen, x, y, borderWidth, borderHeight);
-            DrawMatrix(matrix);
-        }
-
-        public void DrawCell(double el)
-        {
-            string outputString;
-            outputString = string.Format(cellStringFormat, el);
-            drawRect = new RectangleF(currentX, currentY, width, height);
             
-            data.Add(drawRect, outputString);
-            g.DrawString(outputString, drawFont, myBrush, drawRect, strFormat);
-        }
-
-        public void DrawCellBorder(double el)
-        {
-            g.DrawRectangle(myPen, currentX, currentY, width, height);
-            cellHandler?.Invoke(el);
-        }
-
-        public void DrawMatrix(IMatrix matrix)
-        {
-            ResetCurrentValues();
- 
-            for (int i = 0; i < matrix.RowNumber; i++)
-            {
-                for (int j = 0; j < matrix.ColumnNumber; j++)
-                {
-                    drawRect = new RectangleF(currentX, currentY, width, height);
-                    if (matrix[i,j] == 0)
-                    {
-                        if (matrix is SparseMatrix)
-                        {
-                            cellHandler = null;
-                        }
-                    }
-                    DrawCellBorder(matrix[i, j]);
-                    cellHandler = DrawCell;
-                    currentX += xStep;
-                }
-                currentX = 30;
-
-                currentY += yStep;
-            }
-
+            borderRectangle = new Rectangle(x, y, borderWidth, borderHeight);
+            isBorder = true;
         }
 
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
             DrawCell(matrix, rowIndex, columnIndex);
-            if (!isBorder) isBorder = true;
+            RectangleF lastRect= data.Last().Key;
+            rectBorder.Add(new Rectangle((int)lastRect.X, (int)lastRect.Y, 
+                (int)lastRect.Width, (int)lastRect.Height));
         }
 
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
         {
             string outputString;
-            outputString = string.Format(cellStringFormat, matrix[rowIndex, columnIndex]);
+            switch (matrix)
+            {
+                case SparseMatrix matr:
+                    if (matr[rowIndex, columnIndex] == 0)
+                    {
+                        outputString = string.Format(emptyElementTemplate, "");
+                        break;
+                    }
+                    else goto default;
+                default:
+                    outputString = string.Format(cellStringFormat, matrix[rowIndex, columnIndex]);
+                    break;
+            }
+    
+
             drawRect = new RectangleF(currentX, currentY, width, height);
 
             data.Add(drawRect, outputString);
@@ -128,7 +105,27 @@ namespace IndependentWork1.Realization
 
         public void DrawMatrix()
         {
-            throw new System.NotImplementedException();
+
+            if (isBorder)
+            {
+                g.DrawRectangle(myPen, borderRectangle);
+            }
+
+            foreach (var buffEl in data)
+            {
+                g.DrawString(buffEl.Value, drawFont, myBrush, buffEl.Key, strFormat);
+            }
+
+            foreach (var elBorder in rectBorder)
+            {
+                g.DrawRectangle(myPen, elBorder);
+            }
+
+            ResetCurrentValues();
+
+            isBorder = false;
+            data.Clear();
+            rectBorder.Clear();
         }
 
         public void DrawOnNewLine()

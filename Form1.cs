@@ -45,13 +45,13 @@ namespace ClientPart
         private void drawMatrixWithOtherDrawers()
         {
             matrix.Draw(consoleDrawer);
-            // matrix.Draw(formDrawer);
+            matrix.Draw(formDrawer);
         }
 
         private void drawMatrixBorderWithOtherDrawers()
         {
             matrix.DoDrawBorder(consoleDrawer);
-            // matrix.DoDrawBorder(formDrawer);
+            matrix.DoDrawBorder(formDrawer);
         }
 
         private bool IsMatrixBig()
@@ -121,7 +121,7 @@ namespace ClientPart
             matrix = new DenseMatrix(dmRowCount, dmColumnCount);          
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
-            drawMatrixWithOtherDrawers();
+            checkBox1_Click(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -133,7 +133,7 @@ namespace ClientPart
             matrix = new SparseMatrix(smRowCount, smColumnCount);
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
-            drawMatrixWithOtherDrawers();
+            checkBox1_Click(sender, e);
 
         }
 
@@ -182,9 +182,9 @@ namespace ClientPart
 
                     mxDecorator.RenumberColumns(rndColFirst, rndColSecond);
                     matrix = mxDecorator;
-                    
 
-                    drawMatrixWithOtherDrawers();
+
+                    checkBox1_Click(sender, e);
 
                     string outputMessage = string.Format("Были поменяны строки с номерами {0} и {1}" +
                            "\nИ стобцы с номерами {2} и {3}", rndRowFirst + 1, rndRowSecond + 1, rndColFirst + 1, rndColSecond + 1);
@@ -205,7 +205,7 @@ namespace ClientPart
             {
                 matrix = baseDecorator.getMatrixSource();
             }
-            drawMatrixWithOtherDrawers();
+            checkBox1_Click(sender, e);
         }
 
         private void button5_Click(object sender, EventArgs e)

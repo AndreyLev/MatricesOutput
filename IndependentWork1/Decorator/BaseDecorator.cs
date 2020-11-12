@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace IndependentWork1.Decorator
 {
@@ -63,7 +64,16 @@ namespace IndependentWork1.Decorator
 
         public void DoDrawBorder(IDrawer drawer)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    drawer.DrawCellBorder(this, i, j);
+                }
+                drawer.DrawOnNewLine();
+            }
+            drawer.DrawBorder(this);
+            drawer.DrawMatrix();
         }
     }
 }
