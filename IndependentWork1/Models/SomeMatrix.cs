@@ -44,9 +44,10 @@ namespace IndependentWork1.Models
             {
                 for (int j = 0; j < ColumnNumber; j++)
                 {
-                    drawer.DrawCell(this, i,j);
+                    drawer.DrawCellBorder(this, i, j);
                 }
-            }
+                drawer.DrawOnNewLine();
+            }      
             drawer.DrawMatrix();
         }
 
@@ -58,6 +59,7 @@ namespace IndependentWork1.Models
                 {
                     drawer.DrawCellBorder(this, i, j);
                 }
+                drawer.DrawOnNewLine();
             }
             drawer.DrawBorder(this);
             drawer.DrawMatrix();

@@ -38,9 +38,6 @@ namespace IndependentWork1.Decorator
             }
         }
 
-        protected override IVector Create(int size)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

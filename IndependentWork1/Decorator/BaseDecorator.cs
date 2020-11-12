@@ -15,18 +15,10 @@ namespace IndependentWork1.Decorator
     {
         private IMatrix matrix;
 
-        private IVector[] decorMatrix;
         public BaseDecorator(IMatrix matrix)
         {
             this.matrix = matrix;
-            decorMatrix = new IVector[RowNumber];
-            for (int i = 0; i < RowNumber; i++)
-            {
-                decorMatrix[i] = Create(ColumnNumber);
-            }
         }
-
-        protected abstract IVector Create(int size);
 
         public IMatrix getMatrixSource()
         {
@@ -38,8 +30,8 @@ namespace IndependentWork1.Decorator
         public virtual double this[int rowIndex, int columnIndex]
         {
 
-            get { return decorMatrix[rowIndex][columnIndex]; }
-            set { decorMatrix[rowIndex][columnIndex] = value; }
+            get { return matrix[rowIndex,columnIndex]; }
+            set {  }
         }
 
         public virtual int RowNumber { get { return matrix.RowNumber; } }
@@ -58,7 +50,15 @@ namespace IndependentWork1.Decorator
 
         public void Draw(IDrawer drawer)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    drawer.DrawCellBorder(this, i, j);
+                }
+                drawer.DrawOnNewLine();
+            }
+            drawer.DrawMatrix();
         }
 
         public void DoDrawBorder(IDrawer drawer)

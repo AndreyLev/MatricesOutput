@@ -156,8 +156,7 @@ namespace ClientPart
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
+           
                 ClearDrawAreas();
 
                 if (matrix != null)
@@ -183,18 +182,18 @@ namespace ClientPart
 
                     mxDecorator.RenumberColumns(rndColFirst, rndColSecond);
                     matrix = mxDecorator;
-                    //DrawMatrixDependingOnCheckbox();
+                    
+
+                    drawMatrixWithOtherDrawers();
 
                     string outputMessage = string.Format("Были поменяны строки с номерами {0} и {1}" +
-                        "\nИ стобцы с номерами {2} и {3}", rndRowFirst+1, rndRowSecond+1, rndColFirst+1, rndColSecond+1);
+                           "\nИ стобцы с номерами {2} и {3}", rndRowFirst + 1, rndRowSecond + 1, rndColFirst + 1, rndColSecond + 1);
 
                     MessageBox.Show(outputMessage);
-                }
+
             }
-            catch (InvalidOperationException)
-            {
-                MessageBox.Show("Строки и/или столбца с такими/таким индексами/индексом в матрице нет");
-            }
+            
+          
             
         }
 
@@ -206,7 +205,7 @@ namespace ClientPart
             {
                 matrix = baseDecorator.getMatrixSource();
             }
-            //DrawMatrixDependingOnCheckbox();
+            drawMatrixWithOtherDrawers();
         }
 
         private void button5_Click(object sender, EventArgs e)

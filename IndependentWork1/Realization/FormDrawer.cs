@@ -1,7 +1,9 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace IndependentWork1.Realization
@@ -9,6 +11,11 @@ namespace IndependentWork1.Realization
     class FormDrawer : IDrawer
     {
         delegate void CellHandler(double el);
+
+        static string emptyElementTemplate = "{0,-5:00.00} ";
+        static string cellStringFormat = "{0,4:00.00} ";
+
+        private bool isBorder = false;
 
         Form graphicsForm;
         Graphics g;
@@ -24,6 +31,7 @@ namespace IndependentWork1.Realization
         StringFormat strFormat;
         RectangleF drawRect;
         CellHandler cellHandler;
+        Dictionary<RectangleF, string> data;
 
         public Graphics GraphicsObj { get { return g; } }
 
@@ -39,6 +47,7 @@ namespace IndependentWork1.Realization
             strFormat.LineAlignment = StringAlignment.Center;
             drawRect = new RectangleF(currentX, currentY, width, height);
             cellHandler = DrawCell;
+            data = new Dictionary<RectangleF, string>();
         }
 
         void ResetCurrentValues()
@@ -60,7 +69,10 @@ namespace IndependentWork1.Realization
         public void DrawCell(double el)
         {
             string outputString;
-            outputString = string.Format("{0,4:00.00} ", el);
+            outputString = string.Format(cellStringFormat, el);
+            drawRect = new RectangleF(currentX, currentY, width, height);
+            
+            data.Add(drawRect, outputString);
             g.DrawString(outputString, drawFont, myBrush, drawRect, strFormat);
         }
 
@@ -97,24 +109,33 @@ namespace IndependentWork1.Realization
 
         }
 
-        public void DrawBorder()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
-            throw new System.NotImplementedException();
+            DrawCell(matrix, rowIndex, columnIndex);
+            if (!isBorder) isBorder = true;
         }
 
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
         {
-            throw new System.NotImplementedException();
+            string outputString;
+            outputString = string.Format(cellStringFormat, matrix[rowIndex, columnIndex]);
+            drawRect = new RectangleF(currentX, currentY, width, height);
+
+            data.Add(drawRect, outputString);
+
+            currentX += xStep;
         }
 
         public void DrawMatrix()
         {
             throw new System.NotImplementedException();
         }
+
+        public void DrawOnNewLine()
+        {
+            currentX = 30;
+            currentY += yStep;
+        }
+
     }
 }

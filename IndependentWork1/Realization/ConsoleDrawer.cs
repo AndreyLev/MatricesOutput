@@ -18,18 +18,16 @@ namespace IndependentWork1.Realization
 
         string bufferedElement;
 
-        int buffElNumber;
-
         public ConsoleDrawer()
         {
             data = new List<string>();
             bufferedElement = "";
-            buffElNumber = 0;
         }
 
 
         public void DrawBorder(IMatrix matrix)
         {
+
             int borderLength = matrix.ColumnNumber * 10;
             string border = "";
             while (borderLength-- != 0)
@@ -40,15 +38,6 @@ namespace IndependentWork1.Realization
 
             data.Insert(0, border);
             data.Insert(data.Count, border);
-
-            int insertIndex = 1;
-            for (int i = 0; i < matrix.RowNumber-1; i++)
-            {
-                insertIndex += matrix.ColumnNumber;
-                data.Insert(insertIndex, border);
-                insertIndex++;
-            }
-            
         }
 
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
@@ -62,27 +51,21 @@ namespace IndependentWork1.Realization
                         bufferedElement += String.Format(emptyElementTemplate, "");
                         break;
                     }
-                    else goto default;       
+                    else goto default;
                 default:
                     bufferedElement += String.Format(commonElementTemplate, matrix[rowIndex, columnIndex]);
                     break;
             }
-            if (columnIndex == matrix.ColumnNumber - 1) bufferedElement += "\n";
+
+
             data.Add(bufferedElement);
-            buffElNumber++;
         }
 
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
             DrawCell(matrix, rowIndex, columnIndex);
-            if (data[buffElNumber - 1].Contains('\n'))
-            {
-                data[buffElNumber-1] = 
-                    data[buffElNumber - 1].Remove(data[buffElNumber-1].Length-1);
-            }
 
-            data[buffElNumber - 1] = String.Format("| {0} |", data[buffElNumber - 1]);
-            if (columnIndex == matrix.ColumnNumber - 1) data[buffElNumber - 1] += "\n";
+            data[data.LastIndexOf(bufferedElement)] = String.Format("| {0} |", bufferedElement);
         }
 
         public void DrawMatrix()
@@ -93,7 +76,11 @@ namespace IndependentWork1.Realization
             }
 
             data.Clear();
-            buffElNumber = 0;
+        }
+
+        public void DrawOnNewLine()
+        {
+            data.Add("\n");
         }
 
     }
