@@ -16,12 +16,15 @@ namespace IndependentWork1.Realization
 
         List<string> data;
 
+        string border;
+
         string bufferedElement;
 
         public ConsoleDrawer()
         {
             data = new List<string>();
             bufferedElement = "";
+            border = "";
         }
 
 
@@ -29,15 +32,13 @@ namespace IndependentWork1.Realization
         {
 
             int borderLength = matrix.ColumnNumber * 10;
-            string border = "";
+
+           
             while (borderLength-- != 0)
             {
                 border += "-";
-                if (borderLength == 0) border += "\n";
             }
 
-            data.Insert(0, border);
-            data.Insert(data.Count, border);
         }
 
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
@@ -64,18 +65,23 @@ namespace IndependentWork1.Realization
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
             DrawCell(matrix, rowIndex, columnIndex);
-
             data[data.LastIndexOf(bufferedElement)] = String.Format("| {0} |", bufferedElement);
         }
 
         public void DrawMatrix()
         {
+
+            if (border.Length > 0) Console.WriteLine(border);
+
             foreach (string str in data)
             {
                 Console.Write(str);
             }
 
+            if (border.Length > 0) Console.WriteLine(border);
+
             data.Clear();
+            border = "";
         }
 
         public void DrawOnNewLine()
@@ -83,5 +89,9 @@ namespace IndependentWork1.Realization
             data.Add("\n");
         }
 
+        public void Reset()
+        {
+            Console.Clear();
+        }
     }
 }

@@ -28,6 +28,11 @@ namespace IndependentWork1.Decorator
             return matrix;
         }
 
+        public IMatrix getPreviousSource()
+        {
+            return matrix;
+        }
+
         public virtual double this[int rowIndex, int columnIndex]
         {
 
@@ -39,17 +44,8 @@ namespace IndependentWork1.Decorator
 
         public virtual int ColumnNumber { get { return matrix.ColumnNumber; } }
 
-        public void DoDrawBorder()
-        {
-           
-        }
 
-        public void Draw()
-        {
-           
-        }
-
-        public void Draw(IDrawer drawer)
+        public virtual void Draw(IDrawer drawer)
         {
             for (int i = 0; i < RowNumber; i++)
             {
@@ -62,7 +58,7 @@ namespace IndependentWork1.Decorator
             drawer.DrawMatrix();
         }
 
-        public void DoDrawBorder(IDrawer drawer)
+        public virtual void DoDrawBorder(IDrawer drawer)
         {
             for (int i = 0; i < RowNumber; i++)
             {

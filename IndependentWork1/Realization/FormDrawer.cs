@@ -27,13 +27,14 @@ namespace IndependentWork1.Realization
         int currentY = 30;
         int width = 80;
         int height = 40;
-        int xStep = 90;
-        int yStep = 50;
+        int xStep = 80;
+        int yStep = 40;
         StringFormat strFormat;
         RectangleF drawRect;
         Dictionary<RectangleF, string> data;
         List<Rectangle> rectBorder;
         Rectangle borderRectangle;
+        Pen borderPen;
 
         public Graphics GraphicsObj { get { return g; } }
 
@@ -42,6 +43,7 @@ namespace IndependentWork1.Realization
             this.graphicsForm = graphicsForm;
             this.g = g;
             myPen = new Pen(Color.Red, 2);
+            borderPen = new Pen(Color.Black, 4);
             drawFont = new Font("Arial", 16);
             myBrush = new SolidBrush(Color.Red);
             strFormat = new StringFormat();
@@ -51,20 +53,15 @@ namespace IndependentWork1.Realization
             data = new Dictionary<RectangleF, string>();
             rectBorder = new List<Rectangle>();
         }
-
-        void ResetCurrentValues()
-        {
-            currentX = 30;
-            currentY = 30;
-        }
       
         public void DrawBorder(IMatrix matrix)
         {
-            ResetCurrentValues();
-            int x = currentX - 10;
-            int y = currentY - 10;
-            int borderWidth = xStep * matrix.ColumnNumber + 10;
-            int borderHeight = yStep * matrix.RowNumber + 10;
+            int x, y;
+           
+            x = (int)data.First().Key.X;
+            y = (int)data.First().Key.Y;
+            int borderWidth = xStep * matrix.ColumnNumber;
+            int borderHeight = yStep * matrix.RowNumber;
             
             borderRectangle = new Rectangle(x, y, borderWidth, borderHeight);
             isBorder = true;
@@ -106,22 +103,24 @@ namespace IndependentWork1.Realization
         public void DrawMatrix()
         {
 
-            if (isBorder)
-            {
-                g.DrawRectangle(myPen, borderRectangle);
-            }
-
+          
             foreach (var buffEl in data)
             {
                 g.DrawString(buffEl.Value, drawFont, myBrush, buffEl.Key, strFormat);
             }
 
+        
             foreach (var elBorder in rectBorder)
             {
                 g.DrawRectangle(myPen, elBorder);
             }
 
-            ResetCurrentValues();
+            if (isBorder)
+            {
+                g.DrawRectangle(borderPen, borderRectangle);
+            }
+
+            
 
             isBorder = false;
             data.Clear();
@@ -134,5 +133,10 @@ namespace IndependentWork1.Realization
             currentY += yStep;
         }
 
+        public void Reset()
+        {
+            currentX = 30;
+            currentY = 30;
+        }
     }
 }

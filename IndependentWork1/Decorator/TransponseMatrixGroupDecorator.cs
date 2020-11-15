@@ -14,41 +14,54 @@ namespace IndependentWork1.Decorator
     class TransponseMatrixGroupDecorator: BaseDecorator
     {
 
-        DenseMatrix matrixValues;
         HorizontalMatrixGroup matrixGroup;
 
-        bool transponseFlag;
-
-        public TransponseMatrixGroupDecorator(IMatrix matrix, bool transponseFlag) : base(matrix)
+        public override double this[int rowIndex, int columnIndex]
         {
-
-            //matrixGroup = (HorizontalMatrixGroup)matrix;
-
-            //this.transponseFlag = transponseFlag;
-
-            //if (transponseFlag)
-            //    CollectTheMatrix();
-            //else
-            //    matrixGroup.doHorizontalGroup();
-            matrixGroup = matrix as HorizontalMatrixGroup;
-            if (matrixGroup == null)
+            get
             {
-                if (matrix is TransponseMatrixGroupDecorator)
+                if (rowIndex >= RowNumber || columnIndex >= ColumnNumber) return 0;
+
+                int desiredMatrixIndex = getDesiredMatrixIndex(ref rowIndex, columnIndex);
+                Console.WriteLine("{0} : {1}", desiredMatrixIndex, rowIndex);
+
+                return matrixGroup.MATRIX_GROUP[desiredMatrixIndex][rowIndex, columnIndex];
+            }
+            set
+            {
+                if (rowIndex < RowNumber && columnIndex < ColumnNumber)
                 {
-                    TransponseMatrixGroupDecorator transponseDecorator =
-                                            (TransponseMatrixGroupDecorator)matrix;
-                    matrixGroup = (HorizontalMatrixGroup)
-                                        transponseDecorator.getMatrixSource();
-                } else
-                {
-                    List<IMatrix> matrix_group = new List<IMatrix>() { matrix };
-                    matrixGroup = new HorizontalMatrixGroup(matrix_group, new ConsoleDrawer());
-                    
+
+                    int desiredMatrixIndex = getDesiredMatrixIndex(ref rowIndex, columnIndex);
+
+                    matrixGroup.MATRIX_GROUP[desiredMatrixIndex][rowIndex, columnIndex] = value;
                 }
 
             }
-            CollectTheMatrix();
-            
+        }
+        public TransponseMatrixGroupDecorator(IMatrix matrix) : base(matrix)
+        {
+            matrixGroup = (HorizontalMatrixGroup) matrix;
+        }
+
+        private int getDesiredMatrixIndex(ref int rowIndex, int columnIndex)
+        {
+            int intermediateRowSum = 0;
+            int desiredMatrixIndex = 0;
+            for (int i = 0; i < matrixGroup.MATRIX_GROUP.Count; i++)
+            {
+                intermediateRowSum += matrixGroup.MATRIX_GROUP[i].RowNumber;
+                if (rowIndex < intermediateRowSum)
+                {
+                    desiredMatrixIndex = i;
+                    break;
+                }
+                desiredMatrixIndex++;
+            }
+
+
+            rowIndex = matrixGroup.MATRIX_GROUP[desiredMatrixIndex].RowNumber - (intermediateRowSum - rowIndex);
+            return desiredMatrixIndex;
         }
 
         public override int RowNumber
@@ -67,30 +80,40 @@ namespace IndependentWork1.Decorator
             }
         }
 
-        private void FillValuesWithIndex(int rowIndexOne, int rowIndexTwo, 
-            IMatrix matrixLink, DenseMatrix dm)
+        public override void Draw(IDrawer drawer)
         {
-            for (int i = 0, k = rowIndexOne; i < matrixLink.RowNumber && k < rowIndexTwo; i++, k++)
+            foreach (IMatrix matrix in matrixGroup.MATRIX_GROUP)
             {
-                for (int j = 0; j < matrixLink.ColumnNumber; j++)
+                for (int i = 0; i < matrix.RowNumber; i++)
                 {
-                    dm[k,j] = matrixLink[i, j];
+                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    {
+                        drawer.DrawCellBorder(matrix, i, j);
+                    }
+                    drawer.DrawOnNewLine();
                 }
+                drawer.DrawMatrix();
             }
         }
-        private void CollectTheMatrix()
-        {
-            matrixValues = new DenseMatrix(RowNumber, ColumnNumber);
 
-            int currentIndexOne = 0;
-            int currentIndexTwo = 0;
-            foreach (IMatrix m in matrixGroup.MATRIX_GROUP)
+        public override void DoDrawBorder(IDrawer drawer)
+        {
+            foreach (IMatrix matrix in matrixGroup.MATRIX_GROUP)
             {
-                currentIndexTwo += m.RowNumber;
-                FillValuesWithIndex(currentIndexOne, currentIndexTwo, m, matrixValues);
-                currentIndexOne += m.RowNumber;
+                for (int i = 0; i < matrix.RowNumber; i++)
+                {
+                    for (int j = 0; j < matrix.ColumnNumber; j++)
+                    {
+                        drawer.DrawCellBorder(matrix, i, j);
+                    }
+                    drawer.DrawOnNewLine();
+                }
+                drawer.DrawBorder(matrix);
+                drawer.DrawMatrix();
             }
         }
+
+
 
     }
 }

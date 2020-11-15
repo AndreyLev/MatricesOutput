@@ -1,6 +1,7 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
+using IndependentWork1.Realization;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
@@ -18,7 +19,7 @@ namespace IndependentWork1.Decorator
 
         public override double this[int rowIndex, int columnIndex]
         {
-            get { return this[columnIndex, rowIndex]; }
+            get { return base[columnIndex, rowIndex]; }
             set {  }
         }
 
@@ -38,6 +39,5 @@ namespace IndependentWork1.Decorator
             }
         }
 
-      
     }
 }
