@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Visitor;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 using System;
@@ -11,67 +12,62 @@ using System.Linq.Expressions;
 
 namespace IndependentWork1.Decorator
 {
-    class RenumberingDecorator : BaseDecorator
+    class RenumberingDecorator : IMatrix
     {
-
-        List<KeyValuePair<int, int>> rowChanges;
-        List<KeyValuePair<int, int>> columnChanges;
-
-        public override double this[int rowIndex, int columnIndex]
+        IMatrix matrix;
+        int[] rows;
+        int[] columns;
+        public RenumberingDecorator(IMatrix matrix)
         {
+            this.matrix = matrix;
+
+            rows = new int[matrix.RowNumber];
+            for (int i = 0; i < matrix.RowNumber; i++)
+            {
+                rows[i] = i;
+            }
+
+            columns = new int[matrix.ColumnNumber];
+            for (int i = 0; i < matrix.ColumnNumber; i++)
+            {
+                columns[i] = i;
+            }
+        }
+
+        public double this[int rowIndex, int columnIndex] {
             get
             {
-                if (MapRow(rowIndex) > -1 && MapColumn(columnIndex) > -1)
-                {
-                    return base[MapRow(rowIndex), MapColumn(columnIndex)];
-                }
-                else if (MapRow(rowIndex) > -1)
-                {
-                    return base[MapRow(rowIndex), columnIndex];
-                }
-                else if (MapColumn(columnIndex) > -1)
-                {
-                    return base[rowIndex, MapColumn(columnIndex)];
-                }
-
-
-                return base[rowIndex, columnIndex];
+                return matrix[rows[rowIndex], columns[columnIndex]];
             }
             set { }
         }
 
-        public RenumberingDecorator(IMatrix matrix) : base(matrix)
+        public int RowNumber => matrix.RowNumber;
+
+        public int ColumnNumber => matrix.ColumnNumber;
+
+        public void RenumberRows(int rowIndexOne, int rowIndexTwo)
         {
-            rowChanges = new List<KeyValuePair<int, int>>();
-            columnChanges = new List<KeyValuePair<int, int>>();
+            rows[rowIndexOne] = rowIndexTwo;
+            rows[rowIndexTwo] = rowIndexOne;          
+        }
+         
+        public void RenumberColumns(int columnIndexOne, int columnIndexTwo)
+        {
+            columns[columnIndexOne] = columnIndexTwo;
+            columns[columnIndexTwo] = columnIndexOne;
         }
 
-        private int MapRow(int rowIndex)
+        public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            IEnumerable<KeyValuePair<int, int>> collection = rowChanges.Where(rowPair => rowPair.Key == rowIndex);
-            if (collection.Count() > 0) return collection.Last().Value;
-            return -1;
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    drawer.DrawCell(this, i, j);
+                }
+            }
+            drawer.DrawMatrix(this);
         }
-
-        private int MapColumn(int columnIndex)
-        {
-            IEnumerable<KeyValuePair<int, int>> collection = columnChanges.Where(columnPair => columnPair.Key == columnIndex);
-            if (collection.Count() > 0) return collection.Last().Value;
-            return -1;
-        }
-
-        public void RenumberRows(int rowOneIndex, int rowTwoIndex)
-        {
-            rowChanges.Add(new KeyValuePair<int, int>(rowOneIndex, rowTwoIndex));
-            rowChanges.Add(new KeyValuePair<int, int>(rowTwoIndex, rowOneIndex));
-        }
-
-        public void RenumberColumns(int columnOneIndex, int columnTwoIndex)
-        {
-            columnChanges.Add(new KeyValuePair<int, int>(columnOneIndex, columnTwoIndex));
-            columnChanges.Add(new KeyValuePair<int, int>(columnTwoIndex, columnOneIndex));
-        }
-
-
     }
 }

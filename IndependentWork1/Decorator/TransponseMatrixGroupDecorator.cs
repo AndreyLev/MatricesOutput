@@ -1,4 +1,6 @@
 ﻿using ClientPart.IndependentWork1.Composite;
+using ClientPart.IndependentWork1.Interfaces;
+using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -15,26 +17,28 @@ namespace IndependentWork1.Decorator
     {
 
         HorizontalMatrixGroup matrixGroup;
+        IIterator groupIterator;
 
         public override double this[int rowIndex, int columnIndex]
         {
             get
             {
+               
+
                 if (rowIndex >= RowNumber || columnIndex >= ColumnNumber) return 0;
 
-                int desiredMatrixIndex = getDesiredMatrixIndex(ref rowIndex, columnIndex);
-                Console.WriteLine("{0} : {1}", desiredMatrixIndex, rowIndex);
-
-                return matrixGroup.MATRIX_GROUP[desiredMatrixIndex][rowIndex, columnIndex];
+                IMatrix desired_matrix = getDesiredMatrix(ref rowIndex);
+                
+                return desired_matrix[rowIndex, columnIndex];
             }
             set
             {
                 if (rowIndex < RowNumber && columnIndex < ColumnNumber)
                 {
 
-                    int desiredMatrixIndex = getDesiredMatrixIndex(ref rowIndex, columnIndex);
+                    IMatrix desired_matrix = getDesiredMatrix(ref rowIndex);
 
-                    matrixGroup.MATRIX_GROUP[desiredMatrixIndex][rowIndex, columnIndex] = value;
+                    desired_matrix[rowIndex, columnIndex] = value;
                 }
 
             }
@@ -42,76 +46,112 @@ namespace IndependentWork1.Decorator
         public TransponseMatrixGroupDecorator(IMatrix matrix) : base(matrix)
         {
             matrixGroup = (HorizontalMatrixGroup) matrix;
+            groupIterator = matrixGroup.getCommonIterator();
+            RowNumber = getRowNumber();
+            ColumnNumber = getColumnNumber();
         }
 
-        private int getDesiredMatrixIndex(ref int rowIndex, int columnIndex)
+        private List<IMatrix> getMatrixGroupList()
+        {
+            List<IMatrix> matrixList = new List<IMatrix>();
+            while (groupIterator.hasMore())
+            {
+                matrixList.Add(groupIterator.getNext());
+            }
+
+            groupIterator.Reset();
+            return matrixList;
+        }
+        private void testFunc()
+        {
+           
+           while (groupIterator.hasMore())
+            {
+                
+                IMatrix matr = groupIterator.getNext();
+                for (int i = 0; i < matr.RowNumber; i++)
+                {
+                    for (int j = 0; j < matr.ColumnNumber; j++)
+                    {
+                        Console.Write("{0,-4:00.00} ", matr[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            groupIterator.Reset();
+        }
+
+        private IMatrix getDesiredMatrix(ref int rowIndex)
         {
             int intermediateRowSum = 0;
             int desiredMatrixIndex = 0;
-            for (int i = 0; i < matrixGroup.MATRIX_GROUP.Count; i++)
+
+            while (groupIterator.hasMore())
             {
-                intermediateRowSum += matrixGroup.MATRIX_GROUP[i].RowNumber;
+                intermediateRowSum += groupIterator.getNext().RowNumber;
                 if (rowIndex < intermediateRowSum)
                 {
-                    desiredMatrixIndex = i;
+                    desiredMatrixIndex = groupIterator.CurrentIndex-1;
                     break;
                 }
-                desiredMatrixIndex++;
             }
 
+            groupIterator.Reset();
+         
+            IMatrix desired_matrix = getMatrixGroupList()[desiredMatrixIndex];
 
-            rowIndex = matrixGroup.MATRIX_GROUP[desiredMatrixIndex].RowNumber - (intermediateRowSum - rowIndex);
-            return desiredMatrixIndex;
+            rowIndex = desired_matrix.RowNumber - (intermediateRowSum - rowIndex);
+
+            return desired_matrix;
         }
+
+        private int getRowNumber()
+        {
+           
+                int rowCount = 0;
+                while (groupIterator.hasMore())
+                {
+                    rowCount += groupIterator.getNext().RowNumber;
+                }
+                groupIterator.Reset();
+                return rowCount;
+        }
+
+        private int getColumnNumber()
+        {
+            List<int> columnCountValues = new List<int>();
+            while (groupIterator.hasMore())
+            {
+                columnCountValues.Add(groupIterator.getNext().ColumnNumber);
+            }
+            groupIterator.Reset();
+            return columnCountValues.Max();
+        }
+
 
         public override int RowNumber
         {
-            get
-            {
-                return matrixGroup.MATRIX_GROUP.Select(matrix => matrix.RowNumber).Sum();
-            }
+            get;
         }
 
         public override int ColumnNumber
         {
-            get
-            {
-                return matrixGroup.MATRIX_GROUP.Select(matrix => matrix.ColumnNumber).Max();
-            }
+            get;
         }
 
-        public override void Draw(IDrawer drawer)
+        public override void Draw(IDrawer drawer, IVisitor visitor)
         {
-            foreach (IMatrix matrix in matrixGroup.MATRIX_GROUP)
+            for (int i = 0; i < RowNumber; i++)
             {
-                for (int i = 0; i < matrix.RowNumber; i++)
+                for (int j = 0; j < ColumnNumber; j++)
                 {
-                    for (int j = 0; j < matrix.ColumnNumber; j++)
-                    {
-                        drawer.DrawCellBorder(matrix, i, j);
-                    }
-                    drawer.DrawOnNewLine();
+                    drawer.DrawCellBorder(this, i, j);
                 }
-                drawer.DrawMatrix();
             }
+            drawer.DrawMatrix(this);
         }
 
-        public override void DoDrawBorder(IDrawer drawer)
-        {
-            foreach (IMatrix matrix in matrixGroup.MATRIX_GROUP)
-            {
-                for (int i = 0; i < matrix.RowNumber; i++)
-                {
-                    for (int j = 0; j < matrix.ColumnNumber; j++)
-                    {
-                        drawer.DrawCellBorder(matrix, i, j);
-                    }
-                    drawer.DrawOnNewLine();
-                }
-                drawer.DrawBorder(matrix);
-                drawer.DrawMatrix();
-            }
-        }
+     
 
 
 

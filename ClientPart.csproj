@@ -71,12 +71,18 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IndependentWork1\Composite\HorizontalMatrixGroup.cs" />
+    <Compile Include="IndependentWork1\Constants\MatrixCellFormatConstants.cs" />
     <Compile Include="IndependentWork1\Decorator\BaseDecorator.cs" />
+    <Compile Include="IndependentWork1\Decorator\DrawerDecorator.cs" />
+    <Compile Include="IndependentWork1\Decorator\MatrixBorderDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\RenumberingDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\TransponseMatrixDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\TransponseMatrixGroupDecorator.cs" />
+    <Compile Include="IndependentWork1\Interfaces\IIterator.cs" />
     <Compile Include="IndependentWork1\Interfaces\IMatrix.cs" />
+    <Compile Include="IndependentWork1\Interfaces\IMemento.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVector.cs" />
+    <Compile Include="IndependentWork1\Iterator\MatrixGroupIterator.cs" />
     <Compile Include="IndependentWork1\Models\DenseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\DenseVector.cs" />
     <Compile Include="IndependentWork1\Models\MatrixInitiator.cs" />
@@ -86,7 +92,10 @@
     <Compile Include="IndependentWork1\Models\SparseVector.cs" />
     <Compile Include="IndependentWork1\Realization\ConsoleDrawer.cs" />
     <Compile Include="IndependentWork1\Realization\FormDrawer.cs" />
-    <Compile Include="IndependentWork1\Realization\IDrawer.cs" />
+    <Compile Include="IndependentWork1\Interfaces\IDrawer.cs" />
+    <Compile Include="IndependentWork1\Interfaces\IStrategy.cs" />
+    <Compile Include="IndependentWork1\Interfaces\IVisitor.cs" />
+    <Compile Include="IndependentWork1\Visitor\MatrixVisitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -125,6 +134,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IndependentWork1\Memento\" />
+    <Folder Include="IndependentWork1\Strategy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

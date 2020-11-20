@@ -1,4 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Composite;
+using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
@@ -39,5 +40,9 @@ namespace IndependentWork1.Decorator
             }
         }
 
+        public override void Draw(IDrawer drawer, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

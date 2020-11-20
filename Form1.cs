@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Security.Policy;
 using System.Windows.Forms;
 using ClientPart.IndependentWork1.Composite;
+using ClientPart.IndependentWork1.Decorator;
+using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -22,6 +24,7 @@ namespace ClientPart
         ConsoleDrawer consoleDrawer;
         FormDrawer formDrawer;
         Graphics g;
+        IVisitor visitor;
 
         
         public Form1()
@@ -36,20 +39,21 @@ namespace ClientPart
             graphicsForm.Show();
             consoleDrawer = new ConsoleDrawer();
             g = graphicsForm.CreateGraphics();
-            formDrawer = new FormDrawer(graphicsForm, g);   
-
+            formDrawer = new FormDrawer(graphicsForm, g);
+            visitor = new MatrixVisitor();
         }
         
         private void drawMatrixWithOtherDrawers()
         {
-            matrix.Draw(consoleDrawer);
-            matrix.Draw(formDrawer);
+            matrix.Draw(consoleDrawer, visitor);
+            matrix.Draw(formDrawer, visitor);
         }
 
         private void drawMatrixBorderWithOtherDrawers()
         {
-            matrix.DoDrawBorder(consoleDrawer);
-            matrix.DoDrawBorder(formDrawer);
+            MatrixBorderDecorator mxBorderDeco = new MatrixBorderDecorator(matrix);
+            mxBorderDeco.DrawBorder(consoleDrawer, visitor);
+            mxBorderDeco.DrawBorder(formDrawer, visitor);
         }
 
         void OpenRenumberingButtons()
@@ -64,11 +68,6 @@ namespace ClientPart
             g.Clear(SystemColors.Control);
         }
 
-        private void ResetDrawer()
-        {
-            consoleDrawer.Reset();
-            formDrawer.Reset();
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -100,7 +99,7 @@ namespace ClientPart
         {
 
             ClearDrawAreas();
-            ResetDrawer();
+          
             if (matrix != null)
             {     
                 if (checkBox1.Checked)
@@ -207,25 +206,30 @@ namespace ClientPart
 
             if (matrix != null)
             {
-                switch (matrix)
-                {
-                    case HorizontalMatrixGroup group:
-                        matrix = new TransponseMatrixGroupDecorator(matrix);
-                        break;
-                    case TransponseMatrixGroupDecorator group_deco:
-                        matrix = group_deco.getPreviousSource();
-                        break;
-                    case TransponseMatrixDecorator matr_deco:
-                        matrix = matr_deco.getPreviousSource();
-                        break;
-                    default:
-                        matrix = new TransponseMatrixDecorator(matrix);
-                        break;
-                }
+                //switch (matrix)
+                //{
+                //    case HorizontalMatrixGroup group:
+                //        matrix = new TransponseMatrixGroupDecorator(matrix);
+                //        break;
+                //    case TransponseMatrixGroupDecorator group_deco:
+                //        matrix = group_deco.getPreviousSource();
+                //        break;
+                //    case TransponseMatrixDecorator matr_deco:
+                //        matrix = matr_deco.getPreviousSource();
+                //        break;
+                //    default:
+                //        matrix = new TransponseMatrixDecorator(matrix);
+                //        break;
+                //}
+                matrix = new TransponseMatrixGroupDecorator(matrix);
 
                 checkBox1_Click(sender, e);
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

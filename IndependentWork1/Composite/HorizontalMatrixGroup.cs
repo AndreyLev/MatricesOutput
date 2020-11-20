@@ -1,4 +1,7 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Interfaces;
+using ClientPart.IndependentWork1.Iterator;
+using ClientPart.IndependentWork1.Visitor;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 using System;
@@ -11,15 +14,13 @@ using System.Threading;
 
 namespace ClientPart.IndependentWork1.Composite
 {
-    class HorizontalMatrixGroup : IMatrix
+    public class HorizontalMatrixGroup : IMatrix
     {
 
 
         IDrawer drawer;
       
         List<IMatrix> matrixGroup;
-
-        public List<IMatrix> MATRIX_GROUP { get => matrixGroup; }
 
         public int RowNumber
         {
@@ -43,6 +44,10 @@ namespace ClientPart.IndependentWork1.Composite
             this.drawer = drawer;
         }
 
+        public IIterator getCommonIterator()
+        {
+            return new MatrixGroupIterator(matrixGroup);
+        }
 
         public double this[int rowIndex, int columnIndex]
         {
@@ -125,9 +130,8 @@ namespace ClientPart.IndependentWork1.Composite
                             drawer.DrawCellBorder(matrix, i, j);
                         }      
                 }
-                drawer.DrawOnNewLine();
             }
-            drawer.DrawMatrix();
+            drawer.DrawMatrix(this);
         }
 
         public void DoDrawBorder(IDrawer drawer)
@@ -142,10 +146,26 @@ namespace ClientPart.IndependentWork1.Composite
                         drawer.DrawCellBorder(matrix, i, j);
                     }
                 }
-                drawer.DrawOnNewLine();
             }
             drawer.DrawBorder(this);
-            drawer.DrawMatrix();
+            drawer.DrawMatrix(this);
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Draw(IDrawer drawer, IVisitor visitor)
+        {
+            for (int i = 0; i < RowNumber; i++)
+            {   
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                        drawer.DrawCellBorder(this, i, j);
+                }
+            }
+            drawer.DrawMatrix(this);
         }
     }
 }

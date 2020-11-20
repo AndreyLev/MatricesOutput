@@ -36,7 +36,11 @@ namespace IndependentWork1.Realization
         Rectangle borderRectangle;
         Pen borderPen;
 
+        int columnCounter;
+
         public Graphics GraphicsObj { get { return g; } }
+
+        public string ElementTemplate { get; set; }
 
         public FormDrawer(Form graphicsForm, Graphics g)
         {
@@ -52,14 +56,17 @@ namespace IndependentWork1.Realization
             drawRect = new RectangleF(currentX, currentY, width, height);
             data = new Dictionary<RectangleF, string>();
             rectBorder = new List<Rectangle>();
+            columnCounter = 0;
         }
       
         public void DrawBorder(IMatrix matrix)
         {
             int x, y;
-           
-            x = (int)data.First().Key.X;
-            y = (int)data.First().Key.Y;
+
+            //x = (int)data.First().Key.X;
+            //y = (int)data.First().Key.Y;
+            x = 30;
+            y = 30;
             int borderWidth = xStep * matrix.ColumnNumber;
             int borderHeight = yStep * matrix.RowNumber;
             
@@ -78,29 +85,27 @@ namespace IndependentWork1.Realization
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
         {
             string outputString;
-            switch (matrix)
-            {
-                case SparseMatrix matr:
-                    if (matr[rowIndex, columnIndex] == 0)
-                    {
-                        outputString = string.Format(emptyElementTemplate, "");
-                        break;
-                    }
-                    else goto default;
-                default:
-                    outputString = string.Format(cellStringFormat, matrix[rowIndex, columnIndex]);
-                    break;
-            }
-    
+
+            outputString = string.Format(ElementTemplate, matrix[rowIndex, columnIndex]);
 
             drawRect = new RectangleF(currentX, currentY, width, height);
+            currentX += xStep;
 
+            columnCounter++;
             data.Add(drawRect, outputString);
 
-            currentX += xStep;
+            if (columnCounter == matrix.ColumnNumber)
+            {
+                currentX = 30;
+                currentY += yStep;
+                columnCounter = 0;
+            }
+
+            
+
         }
 
-        public void DrawMatrix()
+        public void DrawMatrix(IMatrix matrix)
         {
 
           
@@ -120,23 +125,14 @@ namespace IndependentWork1.Realization
                 g.DrawRectangle(borderPen, borderRectangle);
             }
 
-            
 
+            currentX = 30;
+            currentY = 30;
             isBorder = false;
             data.Clear();
             rectBorder.Clear();
         }
 
-        public void DrawOnNewLine()
-        {
-            currentX = 30;
-            currentY += yStep;
-        }
 
-        public void Reset()
-        {
-            currentX = 30;
-            currentY = 30;
-        }
     }
 }

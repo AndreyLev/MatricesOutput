@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Realization;
+﻿using ClientPart.IndependentWork1.Visitor;
+using IndependentWork1.Realization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,7 @@ namespace IndependentWork1.Interfaces
 
         double this[int rowIndex, int columnIndex] { get; set; }
 
-        void Draw(IDrawer drawer);
+        void Draw(IDrawer drawer, IVisitor visitor);
 
-        void DoDrawBorder(IDrawer drawer);
     }
 }

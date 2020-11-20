@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Visitor;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Realization;
 using System.Collections;
 using System.Drawing;
@@ -46,9 +47,8 @@ namespace IndependentWork1.Models
                 {
                     drawer.DrawCellBorder(this, i, j);
                 }
-                drawer.DrawOnNewLine();
             }      
-            drawer.DrawMatrix();
+            drawer.DrawMatrix(this);
         }
 
         public void DoDrawBorder(IDrawer drawer)
@@ -59,14 +59,12 @@ namespace IndependentWork1.Models
                 {
                     drawer.DrawCellBorder(this, i, j);
                 }
-                drawer.DrawOnNewLine();
             }
             drawer.DrawBorder(this);
-            drawer.DrawMatrix();
+            drawer.DrawMatrix(this);
         }
-     
-        
-    
+
+        public abstract void Draw(IDrawer drawer, IVisitor visitor);
         
     }
 }

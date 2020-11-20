@@ -6,12 +6,11 @@ namespace IndependentWork1.Realization
 {
     public interface IDrawer
     {  
+        string ElementTemplate { get; set; }
         void DrawBorder(IMatrix matrix);
         void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex);
         void DrawCell(IMatrix matrix, int rowIndex, int columnIndex);
-        void DrawMatrix();
-        void DrawOnNewLine();
-        void Reset();
+        void DrawMatrix(IMatrix matrix);
 
     }
 }
