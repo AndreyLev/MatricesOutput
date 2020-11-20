@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Interfaces;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 
 
@@ -6,11 +7,11 @@ namespace IndependentWork1.Realization
 {
     public interface IDrawer
     {  
-        string ElementTemplate { get; set; }
         void DrawBorder(IMatrix matrix);
         void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex);
         void DrawCell(IMatrix matrix, int rowIndex, int columnIndex);
         void DrawMatrix(IMatrix matrix);
+        void setStrategy(IConfigureCellStrategy strategy);
 
     }
 }

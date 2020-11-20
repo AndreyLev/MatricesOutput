@@ -1,4 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Composite;
+using ClientPart.IndependentWork1.Interfaces;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System;
@@ -12,6 +13,7 @@ namespace IndependentWork1.Realization
 {
     class FormDrawer : IDrawer
     {
+        IConfigureCellStrategy strategy;
 
         static string emptyElementTemplate = "{0,-5:00.00} ";
         static string cellStringFormat = "{0,4:00.00} ";
@@ -42,7 +44,7 @@ namespace IndependentWork1.Realization
 
         public string ElementTemplate { get; set; }
 
-        public FormDrawer(Form graphicsForm, Graphics g)
+        public FormDrawer(Form graphicsForm, Graphics g, IConfigureCellStrategy strategy)
         {
             this.graphicsForm = graphicsForm;
             this.g = g;
@@ -57,8 +59,14 @@ namespace IndependentWork1.Realization
             data = new Dictionary<RectangleF, string>();
             rectBorder = new List<Rectangle>();
             columnCounter = 0;
+            this.strategy = strategy;
         }
-      
+
+        public void setStrategy(IConfigureCellStrategy strategy)
+        {
+            this.strategy = strategy;
+        }
+
         public void DrawBorder(IMatrix matrix)
         {
             int x, y;
@@ -86,7 +94,7 @@ namespace IndependentWork1.Realization
         {
             string outputString;
 
-            outputString = string.Format(ElementTemplate, matrix[rowIndex, columnIndex]);
+            outputString = strategy.ConfigureCell(matrix, rowIndex, columnIndex);
 
             drawRect = new RectangleF(currentX, currentY, width, height);
             currentX += xStep;

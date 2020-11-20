@@ -5,12 +5,8 @@ using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
 
 namespace ClientPart.IndependentWork1.Composite
 {
@@ -55,23 +51,23 @@ namespace ClientPart.IndependentWork1.Composite
             {
                 if (rowIndex >= RowNumber || columnIndex >= ColumnNumber) return 0;
 
-                int desiredMatrixIndex = getDesiredMatrixIndex(rowIndex, ref columnIndex);
+                IMatrix desired_matrix = getDesiredMatrixIndex(rowIndex, ref columnIndex);
 
-                return getAllMatrices()[desiredMatrixIndex][rowIndex, columnIndex];
+                return desired_matrix[rowIndex, columnIndex];
             }
             set
             {
                 if (rowIndex < RowNumber && columnIndex < ColumnNumber)
                 {
 
-                    int desiredMatrixIndex = getDesiredMatrixIndex(rowIndex, ref columnIndex);
+                    IMatrix desired_matrix = getDesiredMatrixIndex(rowIndex, ref columnIndex);
 
-                    getAllMatrices()[desiredMatrixIndex][rowIndex, columnIndex] = value;
+                    desired_matrix[rowIndex, columnIndex] = value;
                 }
 
             }
         }
-        private int getDesiredMatrixIndex(int rowIndex, ref int columnIndex)
+        public IMatrix getDesiredMatrixIndex(int rowIndex, ref int columnIndex)
         {
             List<IMatrix> matricesLinksList = getAllMatrices();
             int intermediateColumnSum = 0;
@@ -87,8 +83,10 @@ namespace ClientPart.IndependentWork1.Composite
                 desiredMatrixIndex++;
             }
 
-            columnIndex = matricesLinksList[desiredMatrixIndex].ColumnNumber - (intermediateColumnSum - columnIndex);
-            return desiredMatrixIndex;
+            IMatrix desired_matrix = matricesLinksList[desiredMatrixIndex];
+
+            columnIndex = desired_matrix.ColumnNumber - (intermediateColumnSum - columnIndex);
+            return desired_matrix;
         }
 
         private List<IMatrix> getAllMatrices()
@@ -158,14 +156,8 @@ namespace ClientPart.IndependentWork1.Composite
 
         public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            for (int i = 0; i < RowNumber; i++)
-            {   
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                        drawer.DrawCellBorder(this, i, j);
-                }
-            }
-            drawer.DrawMatrix(this);
+            visitor.DrawMatrix(drawer, this);
+            
         }
     }
 }

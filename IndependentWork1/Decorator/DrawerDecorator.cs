@@ -1,4 +1,5 @@
-﻿using IndependentWork1.Interfaces;
+﻿using ClientPart.IndependentWork1.Interfaces;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Realization;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,11 @@ namespace ClientPart.IndependentWork1.Decorator
         {
             drawer.DrawBorder(matrix);
             drawer.DrawMatrix(matrix);
+        }
+
+        public void setStrategy(IConfigureCellStrategy strategy)
+        {
+            drawer.setStrategy(strategy);
         }
     }
 }

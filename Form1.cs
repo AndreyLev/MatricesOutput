@@ -6,6 +6,7 @@ using System.Security.Policy;
 using System.Windows.Forms;
 using ClientPart.IndependentWork1.Composite;
 using ClientPart.IndependentWork1.Decorator;
+using ClientPart.IndependentWork1.Strategy;
 using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
@@ -37,9 +38,9 @@ namespace ClientPart
             graphicsForm.MaximizeBox = false;
             graphicsForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             graphicsForm.Show();
-            consoleDrawer = new ConsoleDrawer();
+            consoleDrawer = new ConsoleDrawer(new ConfigureCommonCellStrategy());
             g = graphicsForm.CreateGraphics();
-            formDrawer = new FormDrawer(graphicsForm, g);
+            formDrawer = new FormDrawer(graphicsForm, g, new ConfigureCommonCellStrategy());
             visitor = new MatrixVisitor();
         }
         

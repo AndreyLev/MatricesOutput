@@ -16,6 +16,5 @@ namespace ClientPart.IndependentWork1.Visitor
         void DrawMatrix(IDrawer drawer, SparseMatrix matrix);
 
         void DrawMatrix(IDrawer drawer, HorizontalMatrixGroup matrix);
-
     }
 }

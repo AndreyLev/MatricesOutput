@@ -1,4 +1,5 @@
-﻿using ClientPart.IndependentWork1.Visitor;
+﻿using ClientPart.IndependentWork1.Interfaces;
+using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System;
@@ -14,6 +15,8 @@ namespace IndependentWork1.Realization
     {
         static string emptyElementTemplate = "{0,-5:00.00} ";
         string commonElementTemplate = "{0,-4:00.00} ";
+
+        IConfigureCellStrategy strategy;
 
 
         List<string> data;
@@ -32,7 +35,7 @@ namespace IndependentWork1.Realization
 
         public string ElementTemplate { get; set; }
 
-        public ConsoleDrawer()
+        public ConsoleDrawer(IConfigureCellStrategy strategy)
         {
             data = new List<string>();
             bufferedElement = "";
@@ -43,8 +46,13 @@ namespace IndependentWork1.Realization
             rowData = 0;
             columnData = 0;
             bufferRow = 0;
+            this.strategy = strategy;
         }
 
+        public void setStrategy(IConfigureCellStrategy strategy)
+        {
+            this.strategy = strategy;
+        }
 
         public void DrawBorder(IMatrix matrix)
         {
@@ -63,9 +71,9 @@ namespace IndependentWork1.Realization
         {
             if (rowData == 0 && columnData == 0) matrixData.Add(new List<string>());
             bufferedElement = "";
-            
 
-            bufferedElement += String.Format(ElementTemplate + " ", matrix[rowIndex, columnIndex]);
+
+            bufferedElement += strategy.ConfigureCell(matrix, rowIndex, columnIndex);
             data.Add(bufferedElement);
             bufferRow = rowData;
             matrixData[rowData].Add(bufferedElement);
