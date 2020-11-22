@@ -38,32 +38,6 @@ namespace IndependentWork1.Models
 
         public int ColumnNumber { get; protected set;  }
 
-
-        public void Draw(IDrawer drawer)
-        {
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(this, i, j);
-                }
-            }      
-            drawer.DrawMatrix(this);
-        }
-
-        public void DoDrawBorder(IDrawer drawer)
-        {
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(this, i, j);
-                }
-            }
-            drawer.DrawBorder(this);
-            drawer.DrawMatrix(this);
-        }
-
         public abstract void Draw(IDrawer drawer, IVisitor visitor);
 
         public abstract IMatrix Clone();
