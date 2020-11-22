@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace IndependentWork1.Decorator
 {
-    class TransponseMatrixGroupDecorator: BaseDecorator
+    class TransponseMatrixGroupDecorator: IMatrix
     {
-
+        IMatrix matrix;
         HorizontalMatrixGroup matrixGroup;
         IIterator groupIterator;
 
-        public override double this[int rowIndex, int columnIndex]
+        public double this[int rowIndex, int columnIndex]
         {
             get
             {
@@ -43,8 +43,9 @@ namespace IndependentWork1.Decorator
 
             }
         }
-        public TransponseMatrixGroupDecorator(IMatrix matrix) : base(matrix)
+        public TransponseMatrixGroupDecorator(IMatrix matrix)
         {
+            this.matrix = matrix;
             matrixGroup = (HorizontalMatrixGroup) matrix;
             groupIterator = matrixGroup.getCommonIterator();
             RowNumber = getRowNumber();
@@ -81,7 +82,7 @@ namespace IndependentWork1.Decorator
             groupIterator.Reset();
         }
 
-        private IMatrix getDesiredMatrix(ref int rowIndex)
+        public IMatrix getDesiredMatrix(ref int rowIndex)
         {
             int intermediateRowSum = 0;
             int desiredMatrixIndex = 0;
@@ -129,17 +130,17 @@ namespace IndependentWork1.Decorator
         }
 
 
-        public override int RowNumber
+        public  int RowNumber
         {
             get;
         }
 
-        public override int ColumnNumber
+        public  int ColumnNumber
         {
             get;
         }
 
-        public override void Draw(IDrawer drawer, IVisitor visitor)
+        public void Draw(IDrawer drawer, IVisitor visitor)
         {
             for (int i = 0; i < RowNumber; i++)
             {

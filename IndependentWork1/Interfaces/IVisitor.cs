@@ -1,4 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Composite;
+using IndependentWork1.Decorator;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 using System;
@@ -16,5 +17,7 @@ namespace ClientPart.IndependentWork1.Visitor
         void DrawMatrix(IDrawer drawer, SparseMatrix matrix);
 
         void DrawMatrix(IDrawer drawer, HorizontalMatrixGroup matrix);
+
+        void DrawMatrix(IDrawer drawer, RenumberingDecorator decorator);
     }
 }

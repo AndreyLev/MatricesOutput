@@ -9,7 +9,7 @@ using static ClientPart.IndependentWork1.Constants.MatrixCellFormatConstants;
 
 namespace ClientPart.IndependentWork1.Strategy
 {
-    class ConfigureSparceMatrixStrategy : IConfigureCellStrategy
+    class ConfigureSparceMatrixCellStrategy : IConfigureCellStrategy
     {
         public string ConfigureCell(IMatrix matrix, int rowIndex, int columnIndex)
         {

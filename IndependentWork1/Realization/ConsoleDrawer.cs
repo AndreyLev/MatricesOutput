@@ -1,4 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Interfaces;
+using ClientPart.IndependentWork1.Proxy;
 using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -13,11 +14,7 @@ namespace IndependentWork1.Realization
 {
     public class ConsoleDrawer : IDrawer
     {
-        static string emptyElementTemplate = "{0,-5:00.00} ";
-        string commonElementTemplate = "{0,-4:00.00} ";
-
         IConfigureCellStrategy strategy;
-
 
         List<string> data;
 
@@ -46,7 +43,7 @@ namespace IndependentWork1.Realization
             rowData = 0;
             columnData = 0;
             bufferRow = 0;
-            this.strategy = strategy;
+            this.strategy = new StartProxyStrategy();
         }
 
         public void setStrategy(IConfigureCellStrategy strategy)

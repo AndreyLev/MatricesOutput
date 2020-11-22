@@ -45,6 +45,12 @@ namespace ClientPart.IndependentWork1.Composite
             return new MatrixGroupIterator(matrixGroup);
         }
 
+        public IIterator getAllMatricesIterator()
+        {
+            return new AllMatricesIterator(getAllMatrices());
+        }
+       
+
         public double this[int rowIndex, int columnIndex]
         {
             get
@@ -66,6 +72,13 @@ namespace ClientPart.IndependentWork1.Composite
                 }
 
             }
+        }
+
+        private int MapColumnIndex(int columnIndex)
+        {
+            int IndexMapping = -1;
+            
+            return IndexMapping;
         }
         public IMatrix getDesiredMatrixIndex(int rowIndex, ref int columnIndex)
         {

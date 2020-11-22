@@ -65,6 +65,7 @@ namespace IndependentWork1.Models
         }
 
         public abstract void Draw(IDrawer drawer, IVisitor visitor);
-        
+
+        public abstract IMatrix Clone();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using ClientPart.IndependentWork1.Interfaces;
+using ClientPart.IndependentWork1.Proxy;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System;
@@ -59,12 +60,12 @@ namespace IndependentWork1.Realization
             data = new Dictionary<RectangleF, string>();
             rectBorder = new List<Rectangle>();
             columnCounter = 0;
-            this.strategy = strategy;
+            this.strategy = new StartProxyStrategy();
         }
 
         public void setStrategy(IConfigureCellStrategy strategy)
         {
-            this.strategy = strategy;
+            this.strategy = new ProxyStrategy();
         }
 
         public void DrawBorder(IMatrix matrix)

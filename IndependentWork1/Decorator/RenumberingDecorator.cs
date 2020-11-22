@@ -1,4 +1,5 @@
-﻿using ClientPart.IndependentWork1.Visitor;
+﻿using ClientPart.IndependentWork1.Decorator;
+using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
@@ -12,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace IndependentWork1.Decorator
 {
-    class RenumberingDecorator : IMatrix
+    public class RenumberingDecorator : IMatrix
     {
         IMatrix matrix;
         int[] rows;
@@ -20,7 +21,6 @@ namespace IndependentWork1.Decorator
         public RenumberingDecorator(IMatrix matrix)
         {
             this.matrix = matrix;
-
             rows = new int[matrix.RowNumber];
             for (int i = 0; i < matrix.RowNumber; i++)
             {
@@ -60,14 +60,12 @@ namespace IndependentWork1.Decorator
 
         public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    drawer.DrawCell(this, i, j);
-                }
-            }
-            drawer.DrawMatrix(this);
+            visitor.DrawMatrix(drawer, this);
+        }
+
+        public IMatrix GetSource()
+        {
+            return matrix;
         }
     }
 }

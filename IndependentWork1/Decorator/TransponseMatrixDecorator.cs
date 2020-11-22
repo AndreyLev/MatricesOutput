@@ -12,35 +12,37 @@ using System.Threading.Tasks;
 
 namespace IndependentWork1.Decorator
 {
-    class TransponseMatrixDecorator : BaseDecorator
+    class TransponseMatrixDecorator : IMatrix
     {
-        public TransponseMatrixDecorator(IMatrix matrix) : base(matrix)
+        IMatrix matrix;
+        public TransponseMatrixDecorator(IMatrix matrix)
         {
+            this.matrix = matrix;
         }
 
-        public override double this[int rowIndex, int columnIndex]
+        public double this[int rowIndex, int columnIndex]
         {
-            get { return base[columnIndex, rowIndex]; }
+            get { return matrix[columnIndex, rowIndex]; }
             set {  }
         }
 
-        public override int RowNumber
+        public int RowNumber
         {
             get
             {
-                return base.ColumnNumber;
+                return matrix.ColumnNumber;
             }
         }
 
-        public override int ColumnNumber
+        public int ColumnNumber
         {
             get
             {
-                return base.RowNumber;
+                return matrix.RowNumber;
             }
         }
 
-        public override void Draw(IDrawer drawer, IVisitor visitor)
+        public void Draw(IDrawer drawer, IVisitor visitor)
         {
             throw new NotImplementedException();
         }

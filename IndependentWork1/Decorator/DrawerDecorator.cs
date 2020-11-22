@@ -19,11 +19,7 @@ namespace ClientPart.IndependentWork1.Decorator
         }
 
         public IDrawer Drawer { get => drawer; set => drawer = value; }
-        public string ElementTemplate 
-        { 
-            get => drawer.ElementTemplate; 
-            set { }
-        }
+
 
         public void DrawBorder(IMatrix matrix)
         {

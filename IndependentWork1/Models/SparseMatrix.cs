@@ -20,6 +20,19 @@ namespace IndependentWork1.Models
             visitor.DrawMatrix(drawer, this);
         }
 
+        public override IMatrix Clone()
+        {
+            IMatrix matr = new SparseMatrix(RowNumber, ColumnNumber);
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    matr[i, j] = this[i, j];
+                }
+            }
+            return matr;
+        }
+
         public SparseMatrix(int rowCount, int columnCount) : base(rowCount, columnCount)
         {
         }
