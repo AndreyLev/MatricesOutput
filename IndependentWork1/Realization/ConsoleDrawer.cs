@@ -16,8 +16,6 @@ namespace IndependentWork1.Realization
     {
         IConfigureCellStrategy strategy;
 
-        List<string> data;
-
         string border;
 
         int bufferRow;
@@ -28,17 +26,12 @@ namespace IndependentWork1.Realization
 
         string bufferedElement;
 
-        int counter;
-
-        public string ElementTemplate { get; set; }
-
         public ConsoleDrawer(IConfigureCellStrategy strategy)
         {
-            data = new List<string>();
+          
             bufferedElement = "";
             border = "";
-            ElementTemplate = "{0,-4:00.00}";
-            counter = 0;
+            
             matrixData = new List<List<string>>();
             rowData = 0;
             columnData = 0;
@@ -71,7 +64,6 @@ namespace IndependentWork1.Realization
 
 
             bufferedElement += strategy.ConfigureCell(matrix, rowIndex, columnIndex);
-            data.Add(bufferedElement);
             bufferRow = rowData;
             matrixData[rowData].Add(bufferedElement);
             columnData++;
@@ -81,7 +73,6 @@ namespace IndependentWork1.Realization
                 matrixData.Add(new List<string>());
                 columnData = 0;
             }
-            counter++;
             
         }
 
@@ -94,21 +85,9 @@ namespace IndependentWork1.Realization
 
         public void DrawMatrix(IMatrix matrix)
         {
-           //Console.WriteLine(Console.CursorTop - matrixData.Count);
-            //if (Console.CursorTop - matrixData.Count >= 0)
-            //    Console.SetCursorPosition(0, Console.CursorTop - matrixData.Count);
-             
+            
             if (border.Length > 0) Console.WriteLine(border);
 
-            //for (int i = 0; i < data.Count; i++)
-            //{
-            //    //if (i >= matrix.ColumnNumber &&
-            //    //    i % matrix.ColumnNumber == 0) Console.WriteLine();
-
-            //    Console.Write(data[i]);
-            //}
-            //Console.WriteLine(rowData);
-            //Console.WriteLine(columnData);
             for (int i = 0; i < rowData; i++)
             {
                 for (int j = 0; j < matrixData[i].Count; j++)
@@ -121,7 +100,6 @@ namespace IndependentWork1.Realization
             if (border.Length > 0) Console.WriteLine(border);
 
             
-            data.Clear();
             matrixData.Clear();
             rowData = 0;
             columnData = 0;

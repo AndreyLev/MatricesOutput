@@ -28,13 +28,8 @@ namespace ClientPart.IndependentWork1.Decorator
 
         public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            matrix.Draw(drawer, visitor);   
-        }
-
-        public void DrawBorder(IDrawer drawer, IVisitor visitor)
-        {
             drawer.DrawBorder(this);
-            matrix.Draw(drawer, visitor);
+            matrix.Draw(drawer, visitor);   
         }
     }
 }

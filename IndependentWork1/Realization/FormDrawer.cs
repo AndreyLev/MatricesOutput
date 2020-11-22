@@ -16,9 +16,6 @@ namespace IndependentWork1.Realization
     {
         IConfigureCellStrategy strategy;
 
-        static string emptyElementTemplate = "{0,-5:00.00} ";
-        static string cellStringFormat = "{0,4:00.00} ";
-
         private bool isBorder = false;
 
         Form graphicsForm;
@@ -72,8 +69,6 @@ namespace IndependentWork1.Realization
         {
             int x, y;
 
-            //x = (int)data.First().Key.X;
-            //y = (int)data.First().Key.Y;
             x = 30;
             y = 30;
             int borderWidth = xStep * matrix.ColumnNumber;

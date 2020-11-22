@@ -26,6 +26,7 @@ namespace ClientPart
         FormDrawer formDrawer;
         Graphics g;
         IVisitor visitor;
+        IMatrix buffMatrix;
 
         
         public Form1()
@@ -52,9 +53,9 @@ namespace ClientPart
 
         private void drawMatrixBorderWithOtherDrawers()
         {
-            MatrixBorderDecorator mxBorderDeco = new MatrixBorderDecorator(matrix);
-            mxBorderDeco.DrawBorder(consoleDrawer, visitor);
-            mxBorderDeco.DrawBorder(formDrawer, visitor);
+            IMatrix mxBorderDeco = new MatrixBorderDecorator(matrix);
+            mxBorderDeco.Draw(consoleDrawer, visitor);
+            mxBorderDeco.Draw(formDrawer, visitor);
         }
 
         void OpenRenumberingButtons()
@@ -79,6 +80,7 @@ namespace ClientPart
             matrix = new DenseMatrix(dmRowCount, dmColumnCount);          
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
+            buffMatrix = ((SomeMatrix)matrix).Clone();
             checkBox1_Click(sender, e);
         }
 
@@ -92,6 +94,7 @@ namespace ClientPart
             matrix = new SparseMatrix(smRowCount, smColumnCount);
             MatrixInitiator.FillMatrix(matrix, 15, 15);
 
+            buffMatrix = ((SomeMatrix)matrix).Clone();
             checkBox1_Click(sender, e);
 
         }
@@ -160,10 +163,14 @@ namespace ClientPart
         private void button4_Click(object sender, EventArgs e)
         {
             ClearDrawAreas();
-            BaseDecorator baseDecorator = matrix as BaseDecorator;
-            if (baseDecorator != null)
+            //BaseDecorator baseDecorator = matrix as BaseDecorator;
+            //if (baseDecorator != null)
+            //{
+            //    matrix = baseDecorator.getMatrixSource();
+            //}
+            if (buffMatrix != null)
             {
-                matrix = baseDecorator.getMatrixSource();
+                matrix = buffMatrix;
             }
             checkBox1_Click(sender, e);
         }

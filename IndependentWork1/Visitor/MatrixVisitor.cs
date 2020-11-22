@@ -61,7 +61,6 @@ namespace ClientPart.IndependentWork1.Visitor
 
         public void DrawMatrix(IDrawer drawer, RenumberingDecorator decorator)
         {
-            IMatrix m = decorator.GetSource();
             for (int i = 0; i < decorator.RowNumber; i++)
             {
                 for (int j = 0; j < decorator.ColumnNumber; j++)

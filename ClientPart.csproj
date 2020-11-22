@@ -72,8 +72,7 @@
     </Compile>
     <Compile Include="IndependentWork1\Composite\HorizontalMatrixGroup.cs" />
     <Compile Include="IndependentWork1\Constants\MatrixCellFormatConstants.cs" />
-    <Compile Include="IndependentWork1\Decorator\BaseDecorator.cs" />
-    <Compile Include="IndependentWork1\Decorator\DrawerDecorator.cs" />
+    <Compile Include="IndependentWork1\Decorator\IDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\MatrixBorderDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\RenumberingDecorator.cs" />
     <Compile Include="IndependentWork1\Decorator\TransponseMatrixDecorator.cs" />
@@ -81,8 +80,8 @@
     <Compile Include="IndependentWork1\Interfaces\IConfigureCellStrategy.cs" />
     <Compile Include="IndependentWork1\Interfaces\IIterator.cs" />
     <Compile Include="IndependentWork1\Interfaces\IMatrix.cs" />
-    <Compile Include="IndependentWork1\Interfaces\IMemento.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVector.cs" />
+    <Compile Include="IndependentWork1\Iterator\AllMatricesIterator.cs" />
     <Compile Include="IndependentWork1\Iterator\MatrixGroupIterator.cs" />
     <Compile Include="IndependentWork1\Models\DenseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\DenseVector.cs" />
@@ -91,12 +90,14 @@
     <Compile Include="IndependentWork1\Models\SomeMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseVector.cs" />
+    <Compile Include="IndependentWork1\Proxy\ProxyStrategy.cs" />
+    <Compile Include="IndependentWork1\Proxy\StartProxyStrategy.cs" />
     <Compile Include="IndependentWork1\Realization\ConsoleDrawer.cs" />
     <Compile Include="IndependentWork1\Realization\FormDrawer.cs" />
     <Compile Include="IndependentWork1\Interfaces\IDrawer.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVisitor.cs" />
     <Compile Include="IndependentWork1\Strategy\ConfigureCommonCellStrategy.cs" />
-    <Compile Include="IndependentWork1\Strategy\ConfigureSparceMatrixStrategy.cs" />
+    <Compile Include="IndependentWork1\Strategy\ConfigureSparceMatrixCellStrategy.cs" />
     <Compile Include="IndependentWork1\Visitor\MatrixVisitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,8 +138,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IndependentWork1\Memento\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
