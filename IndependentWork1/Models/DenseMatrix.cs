@@ -31,7 +31,14 @@ namespace IndependentWork1.Models
 
         public override void Draw(IDrawer drawer, IVisitor visitor)
         {
-            visitor.DrawMatrix(drawer, this);
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    visitor.visitMatrixElement(this, i, j);
+                }
+            }
+            drawer.DrawMatrix(this);
         }
 
         protected override IVector create(int size)

@@ -58,14 +58,33 @@ namespace IndependentWork1.Decorator
             columns[columnIndexTwo] = columnIndexOne;
         }
 
-        public void Draw(IDrawer drawer, IVisitor visitor)
-        {
-            visitor.DrawMatrix(drawer, this);
-        }
-
         public IMatrix GetSource()
         {
-            return matrix;
+            SomeMatrix matr = matrix as SomeMatrix;
+            if (matr != null) return matr;
+            return ((RenumberingDecorator)matrix).GetSource();
+        }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            this.matrix.DrawCell(this.matrix, rows[rowIndex], columns[columnIndex], visitor);
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            this.matrix.DrawCell(this.matrix, rows[rowIndex], columns[columnIndex], visitor);
+        }
+
+        public void Draw(IDrawer drawer, IVisitor visitor)
+        {
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    DrawCell(matrix, i, j, visitor);
+                }
+            }
+            drawer.DrawMatrix(this);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace IndependentWork1.Realization
 
         private bool isBorder = false;
 
+
         Form graphicsForm;
         Graphics g;
         Pen myPen;
@@ -31,12 +32,16 @@ namespace IndependentWork1.Realization
         int yStep = 40;
         StringFormat strFormat;
         RectangleF drawRect;
-        Dictionary<RectangleF, string> data;
+        Dictionary<string, RectangleF> data;
         List<Rectangle> rectBorder;
         Rectangle borderRectangle;
         Pen borderPen;
+        List<string> strData;
+        List<RectangleF> rectData;
+        RectangleF rectForDraw;
+        List<int> isCellBorder;
 
-        int columnCounter;
+        int counter;
 
         public Graphics GraphicsObj { get { return g; } }
 
@@ -54,15 +59,18 @@ namespace IndependentWork1.Realization
             strFormat.Alignment = StringAlignment.Center;
             strFormat.LineAlignment = StringAlignment.Center;
             drawRect = new RectangleF(currentX, currentY, width, height);
-            data = new Dictionary<RectangleF, string>();
+            data = new Dictionary<string, RectangleF>();
+            strData = new List<string>();
+            rectData = new List<RectangleF>();
             rectBorder = new List<Rectangle>();
-            columnCounter = 0;
+            counter = 0;
             this.strategy = new StartProxyStrategy();
+            isCellBorder = new List<int>();
         }
 
         public void setStrategy(IConfigureCellStrategy strategy)
         {
-            this.strategy = new ProxyStrategy();
+            this.strategy = new StartProxyStrategy();
         }
 
         public void DrawBorder(IMatrix matrix)
@@ -81,9 +89,7 @@ namespace IndependentWork1.Realization
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
             DrawCell(matrix, rowIndex, columnIndex);
-            RectangleF lastRect= data.Last().Key;
-            rectBorder.Add(new Rectangle((int)lastRect.X, (int)lastRect.Y, 
-                (int)lastRect.Width, (int)lastRect.Height));
+            isCellBorder.Add(counter);
         }
 
         public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex)
@@ -92,33 +98,33 @@ namespace IndependentWork1.Realization
 
             outputString = strategy.ConfigureCell(matrix, rowIndex, columnIndex);
 
-            drawRect = new RectangleF(currentX, currentY, width, height);
-            currentX += xStep;
-
-            columnCounter++;
-            data.Add(drawRect, outputString);
-
-            if (columnCounter == matrix.ColumnNumber)
-            {
-                currentX = 30;
-                currentY += yStep;
-                columnCounter = 0;
-            }
-
-            
-
+            strData.Add(outputString);
+            counter++;
         }
 
         public void DrawMatrix(IMatrix matrix)
         {
 
-          
-            foreach (var buffEl in data)
+
+            for (int i = 1; i <= strData.Count; i++)
             {
-                g.DrawString(buffEl.Value, drawFont, myBrush, buffEl.Key, strFormat);
+                rectForDraw = new RectangleF(currentX, currentY, width, height);
+                g.DrawString(strData[i - 1], drawFont, myBrush, rectForDraw, strFormat);
+
+                if (isCellBorder.Contains(i))
+                {
+                    g.DrawRectangle(myPen, currentX, currentY, width, height);
+                }
+
+                currentX += xStep;
+                if (i >= matrix.ColumnNumber && (i % matrix.ColumnNumber == 0))
+                {
+                    currentY += yStep;
+                    currentX = 30;
+                }
             }
 
-        
+
             foreach (var elBorder in rectBorder)
             {
                 g.DrawRectangle(myPen, elBorder);
@@ -135,6 +141,7 @@ namespace IndependentWork1.Realization
             isBorder = false;
             data.Clear();
             rectBorder.Clear();
+            strData.Clear();
         }
 
 

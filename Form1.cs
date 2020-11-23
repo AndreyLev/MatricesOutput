@@ -25,7 +25,8 @@ namespace ClientPart
         ConsoleDrawer consoleDrawer;
         FormDrawer formDrawer;
         Graphics g;
-        IVisitor visitor;
+        IVisitor visitorOne;
+        IVisitor visitorTwo;
         IMatrix buffMatrix;
 
         
@@ -42,20 +43,22 @@ namespace ClientPart
             consoleDrawer = new ConsoleDrawer(new ConfigureCommonCellStrategy());
             g = graphicsForm.CreateGraphics();
             formDrawer = new FormDrawer(graphicsForm, g, new ConfigureCommonCellStrategy());
-            visitor = new MatrixVisitor();
+            visitorOne = new MatrixVisitor(consoleDrawer);
+            visitorTwo = new MatrixVisitor(formDrawer);
+
         }
         
         private void drawMatrixWithOtherDrawers()
         {
-            matrix.Draw(consoleDrawer, visitor);
-            matrix.Draw(formDrawer, visitor);
+            matrix.Draw(consoleDrawer, visitorOne);
+            matrix.Draw(formDrawer, visitorTwo);
         }
 
         private void drawMatrixBorderWithOtherDrawers()
         {
             IMatrix mxBorderDeco = new MatrixBorderDecorator(matrix);
-            mxBorderDeco.Draw(consoleDrawer, visitor);
-            mxBorderDeco.Draw(formDrawer, visitor);
+            mxBorderDeco.Draw(consoleDrawer, visitorOne);
+            mxBorderDeco.Draw(formDrawer, visitorTwo);
         }
 
         void OpenRenumberingButtons()
@@ -183,7 +186,7 @@ namespace ClientPart
             List<IMatrix> matrixList = new List<IMatrix>();
             
             matrixList.Add(new DenseMatrix(2, 2));
-            matrixList.Add(new DenseMatrix(3, 3));
+            matrixList.Add(new SparseMatrix(3, 3));
             matrixList.Add(new DenseMatrix(5, 1));
             matrixList.Add(new DenseMatrix(1, 1));
 

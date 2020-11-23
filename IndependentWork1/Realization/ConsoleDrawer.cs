@@ -24,6 +24,8 @@ namespace IndependentWork1.Realization
         int rowData;
         int columnData;
 
+        List<string> data;
+
         string bufferedElement;
 
         public ConsoleDrawer(IConfigureCellStrategy strategy)
@@ -37,6 +39,7 @@ namespace IndependentWork1.Realization
             columnData = 0;
             bufferRow = 0;
             this.strategy = new StartProxyStrategy();
+            data = new List<string>();
         }
 
         public void setStrategy(IConfigureCellStrategy strategy)
@@ -64,42 +67,55 @@ namespace IndependentWork1.Realization
 
 
             bufferedElement += strategy.ConfigureCell(matrix, rowIndex, columnIndex);
-            bufferRow = rowData;
-            matrixData[rowData].Add(bufferedElement);
-            columnData++;
-            if (columnData == matrix.ColumnNumber)
-            {
-                rowData++;
-                matrixData.Add(new List<string>());
-                columnData = 0;
-            }
+            data.Add(bufferedElement);
+            //bufferRow = rowData;
+            //matrixData[rowData].Add(bufferedElement);
+            //columnData++;
+            //if (columnData == matrix.ColumnNumber)
+            //{
+            //    rowData++;
+            //    matrixData.Add(new List<string>());
+            //    columnData = 0;
+            //}
             
         }
 
         public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex)
         {
             DrawCell(matrix, rowIndex, columnIndex);
-            matrixData[bufferRow][matrixData[bufferRow].Count-1] = 
-                String.Format("| {0} |", matrixData[bufferRow][matrixData[bufferRow].Count - 1]);
+            //matrixData[bufferRow][matrixData[bufferRow].Count-1] = 
+            //    String.Format("| {0} |", matrixData[bufferRow][matrixData[bufferRow].Count - 1]);
+            data[data.IndexOf(data.Last())] =
+    String.Format("| {0} |", data[data.IndexOf(data.Last())]);
         }
 
         public void DrawMatrix(IMatrix matrix)
         {
             
+            
             if (border.Length > 0) Console.WriteLine(border);
 
-            for (int i = 0; i < rowData; i++)
+            //for (int i = 0; i < rowData; i++)
+            //{
+            //    for (int j = 0; j < matrixData[i].Count; j++)
+            //    {
+            //        Console.Write(matrixData[i][j]);
+            //    }
+            //    Console.WriteLine();
+            //}
+            for (int i = 1; i <= data.Count; i++)
             {
-                for (int j = 0; j < matrixData[i].Count; j++)
+                Console.Write(data[i-1]);
+                if (i >= matrix.ColumnNumber &&  (i % matrix.ColumnNumber == 0))
                 {
-                    Console.Write(matrixData[i][j]);
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
             }
 
             if (border.Length > 0) Console.WriteLine(border);
 
-            
+
+            data.Clear();
             matrixData.Clear();
             rowData = 0;
             columnData = 0;

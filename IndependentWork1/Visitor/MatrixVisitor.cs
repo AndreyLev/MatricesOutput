@@ -13,62 +13,31 @@ namespace ClientPart.IndependentWork1.Visitor
 {
     class MatrixVisitor : IVisitor
     {
-        //IConfigureCellStrategy strategyOne;
-        //IConfigureCellStrategy strategyTwo;
+        IDrawer drawer;
 
-        public MatrixVisitor()
+        public MatrixVisitor(IDrawer drawer)
         {
-            //strategyOne = new ConfigureCommonCellStrategy();
-            //strategyTwo = new ConfigureSparceMatrixCellStrategy();
-        }
-       
-       public void DrawMatrix(IDrawer drawer, DenseMatrix matrix)
-        {
-            for (int i = 0; i < matrix.RowNumber; i++)
-            {
-                for (int j = 0; j < matrix.ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(matrix, i, j);
-                }
-            }
-            drawer.DrawMatrix(matrix);
+            this.drawer = drawer;
         }
 
-        public void DrawMatrix(IDrawer drawer, SparseMatrix matrix)
+        public void visitDenseMatrix(DenseMatrix matrix)
         {
-            for (int i = 0; i < matrix.RowNumber; i++)
-            {
-                for (int j = 0; j < matrix.ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(matrix,i,j);
-                }
-            }
-            drawer.DrawMatrix(matrix);
+            drawer.DrawBorder(matrix);
         }
 
-        public void DrawMatrix(IDrawer drawer, HorizontalMatrixGroup matrix)
+        public void visitMatrixElement(IMatrix matrix, int rowIndex, int columnIndex)
         {
-
-            for (int i = 0; i < matrix.RowNumber; i++)
-            {
-                for (int j = 0; j < matrix.ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(matrix, i, j);
-                }
-            }
-            drawer.DrawMatrix(matrix);
+            drawer.DrawCellBorder(matrix, rowIndex, columnIndex);
         }
 
-        public void DrawMatrix(IDrawer drawer, RenumberingDecorator decorator)
+        public void visitSparseMatrix(SparseMatrix matrix)
         {
-            for (int i = 0; i < decorator.RowNumber; i++)
-            {
-                for (int j = 0; j < decorator.ColumnNumber; j++)
-                {
-                    drawer.DrawCellBorder(decorator, i, j);
-                }
-            }
-            drawer.DrawMatrix(decorator);
+            drawer.DrawBorder(matrix);
+        }
+
+        public void VisitTransponseDecorator(TransponseMatrixGroupDecorator deco)
+        {
+            drawer.DrawMatrix(deco);
         }
     }
 }

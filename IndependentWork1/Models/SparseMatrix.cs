@@ -15,11 +15,6 @@ namespace IndependentWork1.Models
             return new SparseVector(size);
         }
 
-        public override void Draw(IDrawer drawer, IVisitor visitor)
-        {
-            visitor.DrawMatrix(drawer, this);
-        }
-
         public override IMatrix Clone()
         {
             IMatrix matr = new SparseMatrix(RowNumber, ColumnNumber);
@@ -35,6 +30,18 @@ namespace IndependentWork1.Models
 
         public SparseMatrix(int rowCount, int columnCount) : base(rowCount, columnCount)
         {
+        }
+
+        public override void Draw(IDrawer drawer, IVisitor visitor)
+        {
+            for (int i = 0; i < RowNumber; i++)
+            {
+                for (int j = 0; j < ColumnNumber; j++)
+                {
+                    visitor.visitMatrixElement(this, i, j);
+                }
+            }
+            drawer.DrawMatrix(this);
         }
 
     }

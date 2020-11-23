@@ -24,7 +24,6 @@ namespace ClientPart.IndependentWork1.Proxy
                 case HorizontalMatrixGroup horizontalGroup:
                     IMatrix m = horizontalGroup.getDesiredMatrixIndex(rowIndex, ref columnIndex);
                     return nextStrategy.ConfigureCell(m, rowIndex, columnIndex);
-                    break;
                 default:
                     return nextStrategy.ConfigureCell(matrix, rowIndex, columnIndex);
             }

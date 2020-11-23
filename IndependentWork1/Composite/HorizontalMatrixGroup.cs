@@ -169,8 +169,28 @@ namespace ClientPart.IndependentWork1.Composite
 
         public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            visitor.DrawMatrix(drawer, this);
-            
+          for (int i = 0; i < RowNumber; i++)
+            {
+                for (int e = 0; e < matrixGroup.Count; e++)
+                {
+                    for (int j = 0; j < matrixGroup[e].ColumnNumber; j++)
+                    {
+                        visitor.visitMatrixElement(matrixGroup[e], i, j);
+                    }
+                }
+            }
+            drawer.DrawMatrix(this);
+
+        }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
         }
     }
 }

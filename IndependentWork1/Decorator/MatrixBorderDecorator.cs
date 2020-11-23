@@ -31,5 +31,15 @@ namespace ClientPart.IndependentWork1.Decorator
             drawer.DrawBorder(this);
             matrix.Draw(drawer, visitor);   
         }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

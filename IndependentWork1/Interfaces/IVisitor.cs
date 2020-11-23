@@ -1,5 +1,6 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using IndependentWork1.Decorator;
+using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using IndependentWork1.Realization;
 using System;
@@ -12,12 +13,12 @@ namespace ClientPart.IndependentWork1.Visitor
 {
     public interface IVisitor
     {
-        void DrawMatrix(IDrawer drawer, DenseMatrix matrix);
+        void visitDenseMatrix(DenseMatrix matrix);
 
-        void DrawMatrix(IDrawer drawer, SparseMatrix matrix);
+        void visitSparseMatrix(SparseMatrix matrix);
 
-        void DrawMatrix(IDrawer drawer, HorizontalMatrixGroup matrix);
+        void VisitTransponseDecorator(TransponseMatrixGroupDecorator deco);
 
-        void DrawMatrix(IDrawer drawer, RenumberingDecorator decorator);
+        void visitMatrixElement(IMatrix matrix, int rowIndex, int columnIndex);
     }
 }

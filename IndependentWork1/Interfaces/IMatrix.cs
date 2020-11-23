@@ -16,5 +16,8 @@ namespace IndependentWork1.Interfaces
 
         void Draw(IDrawer drawer, IVisitor visitor);
 
+        void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor);
+
+        void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor);
     }
 }

@@ -46,5 +46,15 @@ namespace IndependentWork1.Decorator
         {
             throw new NotImplementedException();
         }
+
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

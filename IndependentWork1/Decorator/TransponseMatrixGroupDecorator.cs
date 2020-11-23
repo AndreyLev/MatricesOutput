@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace IndependentWork1.Decorator
 {
-    class TransponseMatrixGroupDecorator: IMatrix
+   public class TransponseMatrixGroupDecorator: IMatrix
     {
         IMatrix matrix;
         HorizontalMatrixGroup matrixGroup;
@@ -142,19 +142,44 @@ namespace IndependentWork1.Decorator
 
         public void Draw(IDrawer drawer, IVisitor visitor)
         {
-            for (int i = 0; i < RowNumber; i++)
+            //while (groupIterator.hasMore())
+            //{
+            //    IMatrix m = groupIterator.getNext();
+            //    for (int i = 0; i < m.RowNumber; i++)
+            //    {
+            //        for (int j = 0; j < m.ColumnNumber; j++)
+            //        {
+            //            visitor.visitMatrixElement(m, i, j);
+            //        }
+            //    }
+            //    drawer.DrawMatrix(m);
+            //}
+
+            //drawer.DrawBorder(this);
+            while (groupIterator.hasMore())
             {
-                for (int j = 0; j < ColumnNumber; j++)
+                IMatrix m = groupIterator.getNext();
+                for (int i = 0; i < m.RowNumber; i++)
                 {
-                    drawer.DrawCellBorder(this, i, j);
+                    for (int j = 0; j < ColumnNumber; j++)
+                    {
+                        visitor.visitMatrixElement(m, i, j);
+                    }
                 }
+                
             }
+            groupIterator.Reset();
             drawer.DrawMatrix(this);
         }
 
-     
+        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
 
-
-
+        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
