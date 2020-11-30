@@ -29,16 +29,9 @@ namespace IndependentWork1.Models
             return matr;
         }
 
-        public override void Draw(IDrawer drawer, IVisitor visitor)
+        public override void Accept(IVisitor visitor)
         {
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    visitor.visitMatrixElement(this, i, j);
-                }
-            }
-            drawer.DrawMatrix(this);
+            visitor.visitDenseMatrix(this);
         }
 
         protected override IVector create(int size)

@@ -14,11 +14,10 @@ namespace ClientPart.IndependentWork1.Visitor
     public interface IVisitor
     {
         void visitDenseMatrix(DenseMatrix matrix);
-
         void visitSparseMatrix(SparseMatrix matrix);
-
-        void VisitTransponseDecorator(TransponseMatrixGroupDecorator deco);
-
+        void visitHorizontalMatrixGroup(HorizontalMatrixGroup matrix);
+        void visitMatrix(IMatrix matrix);
         void visitMatrixElement(IMatrix matrix, int rowIndex, int columnIndex);
+        void visitMatrixBorder(IMatrix matrix);
     }
 }

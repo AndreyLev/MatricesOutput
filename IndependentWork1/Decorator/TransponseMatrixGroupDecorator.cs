@@ -140,22 +140,8 @@ namespace IndependentWork1.Decorator
             get;
         }
 
-        public void Draw(IDrawer drawer, IVisitor visitor)
-        {
-            //while (groupIterator.hasMore())
-            //{
-            //    IMatrix m = groupIterator.getNext();
-            //    for (int i = 0; i < m.RowNumber; i++)
-            //    {
-            //        for (int j = 0; j < m.ColumnNumber; j++)
-            //        {
-            //            visitor.visitMatrixElement(m, i, j);
-            //        }
-            //    }
-            //    drawer.DrawMatrix(m);
-            //}
-
-            //drawer.DrawBorder(this);
+        public void Accept(IVisitor visitor)
+        { 
             while (groupIterator.hasMore())
             {
                 IMatrix m = groupIterator.getNext();
@@ -169,17 +155,8 @@ namespace IndependentWork1.Decorator
                 
             }
             groupIterator.Reset();
-            drawer.DrawMatrix(this);
+            visitor.visitMatrix(this);
         }
 
-        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

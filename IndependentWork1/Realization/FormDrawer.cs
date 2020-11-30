@@ -1,6 +1,6 @@
 ﻿using ClientPart.IndependentWork1.Composite;
 using ClientPart.IndependentWork1.Interfaces;
-using ClientPart.IndependentWork1.Proxy;
+using ClientPart.IndependentWork1.Strategy;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
 using System;
@@ -64,13 +64,13 @@ namespace IndependentWork1.Realization
             rectData = new List<RectangleF>();
             rectBorder = new List<Rectangle>();
             counter = 0;
-            this.strategy = new StartProxyStrategy();
+            this.strategy = new ConfigureCommonCellStrategy();
             isCellBorder = new List<int>();
         }
 
         public void setStrategy(IConfigureCellStrategy strategy)
         {
-            this.strategy = new StartProxyStrategy();
+            this.strategy = strategy;
         }
 
         public void DrawBorder(IMatrix matrix)

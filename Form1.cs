@@ -43,22 +43,22 @@ namespace ClientPart
             consoleDrawer = new ConsoleDrawer(new ConfigureCommonCellStrategy());
             g = graphicsForm.CreateGraphics();
             formDrawer = new FormDrawer(graphicsForm, g, new ConfigureCommonCellStrategy());
-            visitorOne = new MatrixVisitor(consoleDrawer);
-            visitorTwo = new MatrixVisitor(formDrawer);
+            visitorOne = new DrawMatrixVisitor(consoleDrawer);
+            visitorTwo = new DrawMatrixVisitor(formDrawer);
 
         }
         
         private void drawMatrixWithOtherDrawers()
         {
-            matrix.Draw(consoleDrawer, visitorOne);
-            matrix.Draw(formDrawer, visitorTwo);
+            matrix.Accept(visitorOne);
+            matrix.Accept(visitorTwo);
         }
 
         private void drawMatrixBorderWithOtherDrawers()
         {
             IMatrix mxBorderDeco = new MatrixBorderDecorator(matrix);
-            mxBorderDeco.Draw(consoleDrawer, visitorOne);
-            mxBorderDeco.Draw(formDrawer, visitorTwo);
+            mxBorderDeco.Accept(visitorOne);
+            mxBorderDeco.Accept(visitorTwo);
         }
 
         void OpenRenumberingButtons()

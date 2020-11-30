@@ -13,11 +13,6 @@ namespace IndependentWork1.Interfaces
         int ColumnNumber { get; }
 
         double this[int rowIndex, int columnIndex] { get; set; }
-
-        void Draw(IDrawer drawer, IVisitor visitor);
-
-        void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor);
-
-        void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor);
+        void Accept(IVisitor visitor);
     }
 }

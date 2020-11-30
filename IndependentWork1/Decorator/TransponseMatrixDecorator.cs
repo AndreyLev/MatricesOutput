@@ -42,7 +42,7 @@ namespace IndependentWork1.Decorator
             }
         }
 
-        public void Draw(IDrawer drawer, IVisitor visitor)
+        public void Accept(IVisitor visitor)
         {
             throw new NotImplementedException();
         }

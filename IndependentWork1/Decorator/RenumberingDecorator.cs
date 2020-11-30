@@ -65,26 +65,22 @@ namespace IndependentWork1.Decorator
             return ((RenumberingDecorator)matrix).GetSource();
         }
 
-        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
+
+        private void DrawCell(IVisitor visitor, IMatrix matrix, int rowIndex, int columnIndex)
         {
-            this.matrix.DrawCell(this.matrix, rows[rowIndex], columns[columnIndex], visitor);
+            visitor.visitMatrixElement(matrix, rows[rowIndex], columns[columnIndex]);
         }
 
-        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            this.matrix.DrawCell(this.matrix, rows[rowIndex], columns[columnIndex], visitor);
-        }
-
-        public void Draw(IDrawer drawer, IVisitor visitor)
+        public void Accept(IVisitor visitor)
         {
             for (int i = 0; i < RowNumber; i++)
             {
                 for (int j = 0; j < ColumnNumber; j++)
                 {
-                    DrawCell(matrix, i, j, visitor);
+                    visitor.visitMatrixElement(matrix, i, j);
                 }
             }
-            drawer.DrawMatrix(this);
+            visitor.visitMatrix(this);
         }
     }
 }

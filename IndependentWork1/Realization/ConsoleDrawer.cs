@@ -1,5 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Interfaces;
-using ClientPart.IndependentWork1.Proxy;
+using ClientPart.IndependentWork1.Strategy;
 using ClientPart.IndependentWork1.Visitor;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -38,7 +38,7 @@ namespace IndependentWork1.Realization
             rowData = 0;
             columnData = 0;
             bufferRow = 0;
-            this.strategy = new StartProxyStrategy();
+            this.strategy = new ConfigureCommonCellStrategy();
             data = new List<string>();
         }
 

@@ -26,20 +26,19 @@ namespace ClientPart.IndependentWork1.Decorator
 
         public int ColumnNumber => matrix.ColumnNumber;
 
-        public void Draw(IDrawer drawer, IVisitor visitor)
+        public void Accept(IVisitor visitor)
         {
-            drawer.DrawBorder(this);
-            matrix.Draw(drawer, visitor);   
+            //visitor.visitMatrixBorder(matrix);
+            //matrix.Draw(visitor);
+            //for (int i = 0; i < matrix.RowNumber; i++)
+            //{
+            //    for (int j = 0; j < matrix.ColumnNumber; j++)
+            //    {
+            //        DrawCell(matrix, i, j, visitor);
+            //    }
+            //}
+            //visitor.visitMatrix(this);
         }
 
-        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

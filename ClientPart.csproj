@@ -90,15 +90,13 @@
     <Compile Include="IndependentWork1\Models\SomeMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseMatrix.cs" />
     <Compile Include="IndependentWork1\Models\SparseVector.cs" />
-    <Compile Include="IndependentWork1\Proxy\ProxyStrategy.cs" />
-    <Compile Include="IndependentWork1\Proxy\StartProxyStrategy.cs" />
     <Compile Include="IndependentWork1\Realization\ConsoleDrawer.cs" />
     <Compile Include="IndependentWork1\Realization\FormDrawer.cs" />
     <Compile Include="IndependentWork1\Interfaces\IDrawer.cs" />
     <Compile Include="IndependentWork1\Interfaces\IVisitor.cs" />
     <Compile Include="IndependentWork1\Strategy\ConfigureCommonCellStrategy.cs" />
     <Compile Include="IndependentWork1\Strategy\ConfigureSparceMatrixCellStrategy.cs" />
-    <Compile Include="IndependentWork1\Visitor\MatrixVisitor.cs" />
+    <Compile Include="IndependentWork1\Visitor\DrawMatrixVisitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -38,18 +38,9 @@ namespace IndependentWork1.Models
 
         public int ColumnNumber { get; protected set;  }
 
-        public abstract void Draw(IDrawer drawer, IVisitor visitor);
+        public abstract void Accept(IVisitor visitor);
 
         public abstract IMatrix Clone();
 
-        public void DrawCell(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            visitor.visitMatrixElement(matrix, rowIndex, columnIndex);
-        }
-
-        public void DrawCellBorder(IMatrix matrix, int rowIndex, int columnIndex, IVisitor visitor)
-        {
-            visitor.visitMatrixElement(matrix, rowIndex, columnIndex);
-        }
     }
 }
