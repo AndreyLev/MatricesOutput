@@ -56,9 +56,10 @@ namespace ClientPart
 
         private void drawMatrixBorderWithOtherDrawers()
         {
-            IMatrix mxBorderDeco = new MatrixBorderDecorator(matrix);
-            mxBorderDeco.Accept(visitorOne);
-            mxBorderDeco.Accept(visitorTwo);
+            visitorOne.visitMatrixBorder(matrix);
+            matrix.Accept(visitorOne);
+            visitorTwo.visitMatrixBorder(matrix);
+            matrix.Accept(visitorTwo);
         }
 
         void OpenRenumberingButtons()
@@ -232,7 +233,7 @@ namespace ClientPart
                 //        matrix = new TransponseMatrixDecorator(matrix);
                 //        break;
                 //}
-                matrix = new TransponseMatrixGroupDecorator(matrix);
+                matrix = new TransponseDecorator(matrix);
 
                 checkBox1_Click(sender, e);
             }

@@ -164,17 +164,7 @@ namespace ClientPart.IndependentWork1.Composite
 
         public void Accept(IVisitor visitor)
         {
-          for (int i = 0; i < RowNumber; i++)
-            {
-                for (int e = 0; e < matrixGroup.Count; e++)
-                {
-                    for (int j = 0; j < matrixGroup[e].ColumnNumber; j++)
-                    {
-                        visitor.visitMatrixElement(matrixGroup[e], i, j);
-                    }
-                }
-            }
-            visitor.visitMatrix(this);
+            visitor.visitHorizontalMatrixGroup(this);
         }
 
     }

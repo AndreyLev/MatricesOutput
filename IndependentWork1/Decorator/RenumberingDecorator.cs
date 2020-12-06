@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace IndependentWork1.Decorator
 {
-    public class RenumberingDecorator : IMatrix
+    public class RenumberingDecorator : BaseDecorator,IMatrix
     {
         IMatrix matrix;
         int[] rows;
@@ -58,29 +58,14 @@ namespace IndependentWork1.Decorator
             columns[columnIndexTwo] = columnIndexOne;
         }
 
-        public IMatrix GetSource()
-        {
-            SomeMatrix matr = matrix as SomeMatrix;
-            if (matr != null) return matr;
-            return ((RenumberingDecorator)matrix).GetSource();
-        }
-
-
-        private void DrawCell(IVisitor visitor, IMatrix matrix, int rowIndex, int columnIndex)
-        {
-            visitor.visitMatrixElement(matrix, rows[rowIndex], columns[columnIndex]);
-        }
-
         public void Accept(IVisitor visitor)
         {
-            for (int i = 0; i < RowNumber; i++)
-            {
-                for (int j = 0; j < ColumnNumber; j++)
-                {
-                    visitor.visitMatrixElement(matrix, i, j);
-                }
-            }
-            visitor.visitMatrix(this);
+            visitor.visitRenumberingDecorator(this);
+        }
+
+        public override IMatrix getLastSource()
+        {
+            return matrix;
         }
     }
 }

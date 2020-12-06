@@ -1,4 +1,5 @@
 ﻿using ClientPart.IndependentWork1.Composite;
+using ClientPart.IndependentWork1.Decorator;
 using IndependentWork1.Decorator;
 using IndependentWork1.Interfaces;
 using IndependentWork1.Models;
@@ -16,6 +17,8 @@ namespace ClientPart.IndependentWork1.Visitor
         void visitDenseMatrix(DenseMatrix matrix);
         void visitSparseMatrix(SparseMatrix matrix);
         void visitHorizontalMatrixGroup(HorizontalMatrixGroup matrix);
+        void visitRenumberingDecorator(RenumberingDecorator decorator);
+        void visitTransponseDecorator(TransponseDecorator decorator);
         void visitMatrix(IMatrix matrix);
         void visitMatrixElement(IMatrix matrix, int rowIndex, int columnIndex);
         void visitMatrixBorder(IMatrix matrix);
